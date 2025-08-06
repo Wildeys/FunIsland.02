@@ -1,61 +1,270 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# FunIsland Tourism Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A comprehensive tourism booking platform built with Laravel 12, featuring hotel reservations, ferry bookings, and theme park tickets. The application includes role-based access control with separate interfaces for customers, management, and administrators.
 
-## About Laravel
+## Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Multi-Service Booking**: Hotels, ferries, and theme parks
+- **Role-Based Access**: Customer, management, and admin interfaces
+- **User Authentication**: Complete registration and login system with Laravel Breeze
+- **Responsive Design**: Built with Tailwind CSS and Alpine.js
+- **Database Management**: Comprehensive migration system with seeders
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requirements
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Before running this application, ensure you have the following installed:
 
-## Learning Laravel
+- **PHP**: Version 8.2 or higher
+- **Composer**: For PHP dependency management
+- **Node.js**: Version 16 or higher
+- **npm**: For frontend dependencies
+- **Database**: SQLite (default) or MySQL/PostgreSQL
+- **Web Server**: Apache/Nginx or use Laravel's built-in server
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Quick Start
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 1. Clone and Navigate
+```bash
+git clone <your-repository-url>
+cd FunIsland-app
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 2. Install Dependencies
+```bash
+# Install PHP dependencies
+composer install
 
-## Laravel Sponsors
+# Install Node.js dependencies
+npm install
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. Environment Setup
+```bash
+# Copy environment file (create if doesn't exist)
+cp .env.example .env
+# OR create manually if .env.example doesn't exist
+```
 
-### Premium Partners
+Create a `.env` file with the following basic configuration:
+```env
+APP_NAME="FunIsland"
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost:8000
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+LOG_CHANNEL=stack
 
-## Contributing
+DB_CONNECTION=sqlite
+# DB_DATABASE=database/database.sqlite
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# For MySQL (alternative):
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=funisland
+# DB_USERNAME=your_username
+# DB_PASSWORD=your_password
 
-## Code of Conduct
+BROADCAST_DRIVER=log
+CACHE_DRIVER=file
+QUEUE_CONNECTION=sync
+SESSION_DRIVER=file
+SESSION_LIFETIME=120
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+MAIL_MAILER=smtp
+MAIL_HOST=localhost
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS="hello@funisland.com"
+MAIL_FROM_NAME="${APP_NAME}"
+```
 
-## Security Vulnerabilities
+### 4. Application Setup
+```bash
+# Generate application key
+php artisan key:generate
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Create SQLite database file (if using SQLite)
+touch database/database.sqlite
+
+# Run database migrations
+php artisan migrate
+
+# Seed the database with initial data
+php artisan db:seed
+```
+
+### 5. Build Frontend Assets
+```bash
+# For development (with file watching)
+npm run dev
+
+# For production (in separate terminal if needed)
+npm run build
+```
+
+### 6. Start the Development Server
+```bash
+# Option 1: Laravel's built-in server
+php artisan serve
+
+# Option 2: Use the convenient dev script (runs server + queue + vite)
+composer run dev
+
+# Option 3: Manual setup (in separate terminals)
+# Terminal 1: PHP server
+php artisan serve
+
+# Terminal 2: Frontend build watcher
+npm run dev
+
+# Terminal 3: Queue worker (if using queues)
+php artisan queue:work
+```
+
+Visit [http://localhost:8000](http://localhost:8000) to access the application.
+
+## Database Setup Options
+
+### Option 1: SQLite (Default - Recommended for Development)
+```bash
+# Already configured in .env
+touch database/database.sqlite
+php artisan migrate
+php artisan db:seed
+```
+
+### Option 2: MySQL
+1. Create a MySQL database named `funisland`
+2. Update your `.env` file:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=funisland
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+```
+3. Run migrations:
+```bash
+php artisan migrate
+php artisan db:seed
+```
+
+## User Roles and Access
+
+The application includes three user roles:
+
+1. **Customer**: Can browse and book services
+2. **Management**: Can manage their respective services (hotels, ferries, theme parks)
+3. **Admin**: Full system access and user management
+
+Initial user accounts will be created through the seeder. Check the `RoleSeeder` for default credentials.
+
+## Available Routes
+
+- **Home**: `/` - Landing page
+- **Browse Services**: 
+  - `/browse/hotels` - Hotel listings
+  - `/browse/ferries` - Ferry schedules
+  - `/browse/themeparks` - Theme park tickets
+- **Authentication**: `/login`, `/register`
+- **Dashboard**: `/dashboard` - Role-based dashboard
+- **Profile**: `/profile` - User profile management
+
+## Development Commands
+
+```bash
+# Run tests
+php artisan test
+# OR
+composer run test
+
+# Clear application cache
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+
+# Generate IDE helper files (if installed)
+php artisan ide-helper:generate
+
+# Database operations
+php artisan migrate:fresh --seed  # Reset and seed database
+php artisan migrate:rollback      # Rollback last migration
+php artisan db:wipe               # Drop all tables
+```
+
+## Project Structure
+
+```
+app/
+├── Http/Controllers/     # Application controllers
+├── Models/              # Eloquent models
+├── View/Components/     # Blade components
+database/
+├── migrations/          # Database schema migrations
+├── seeders/            # Database seeders
+resources/
+├── views/              # Blade templates
+├── css/                # Stylesheets
+└── js/                 # JavaScript files
+routes/
+├── web.php             # Web routes
+└── auth.php            # Authentication routes
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Permission Errors**:
+```bash
+chmod -R 775 storage bootstrap/cache
+```
+
+2. **Missing Application Key**:
+```bash
+php artisan key:generate
+```
+
+3. **Database Connection Errors**:
+   - Verify database credentials in `.env`
+   - Ensure database exists (for MySQL/PostgreSQL)
+   - Check file permissions for SQLite
+
+4. **Frontend Assets Not Loading**:
+```bash
+npm run build
+php artisan config:clear
+```
+
+5. **Class Not Found Errors**:
+```bash
+composer dump-autoload
+```
+
+## Production Deployment
+
+For production deployment:
+
+1. Set `APP_ENV=production` and `APP_DEBUG=false` in `.env`
+2. Configure proper database connection
+3. Set up proper web server (Apache/Nginx)
+4. Run `npm run build` for optimized assets
+5. Configure proper mail settings
+6. Set up SSL certificate
+7. Configure proper file permissions
+
+## Support
+
+For issues and questions:
+- Check Laravel documentation: [https://laravel.com/docs](https://laravel.com/docs)
+- Review application logs in `storage/logs/`
+- Ensure all requirements are met
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
