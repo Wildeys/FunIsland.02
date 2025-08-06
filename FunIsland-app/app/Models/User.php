@@ -21,8 +21,58 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    // Helper methods to check user roles
+    public function hasRole(string $roleName): bool
+    {
+        return $this->role && $this->role->name === $roleName;
+    }
+
+    public function isAdministrator(): bool
+    {
+        return $this->hasRole('administrator');
+    }
+
+    public function isHotelManager(): bool
+    {
+        return $this->hasRole('hotel_manager');
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->hasRole('customer');
+    }
+
+    public function canManageHotels(): bool
+    {
+        return $this->hasRole('administrator') || 
+               $this->hasRole('hotel_manager');
+    }
+
+    public function canManageFerries(): bool
+    {
+        return $this->hasRole('administrator') || 
+               $this->hasRole('ferry_operator');
+    }
+
+    public function canManageThemeParks(): bool
+    {
+        return $this->hasRole('administrator') || 
+               $this->hasRole('theme_park_manager');
+    }
+
+    public function canManageTicketing(): bool
+    {
+        return $this->hasRole('administrator') || 
+               $this->hasRole('ticketing_staff');
+    }
     /**
      * The attributes that should be hidden for serialization.
      *

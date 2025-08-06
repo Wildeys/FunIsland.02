@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -33,18 +34,45 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'account_type' => ['required', 'in:customer,business'],
+            'role' => ['required_if:account_type,business', 'in:hotel_manager,ferry_operator,theme_park_manager,ticketing_staff'],
+            'terms' => ['accepted'],
         ]);
+
+        // Determine the role based on account type
+        if ($request->account_type === 'customer') {
+            $role = Role::where('name', 'customer')->first();
+        } else {
+            $role = Role::where('name', $request->role)->first();
+        }
+
+        if (!$role) {
+            // Fallback to customer role if role not found
+            $role = Role::where('name', 'customer')->first();
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role_id' => $role->id,
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Redirect based on role
+        if ($user->isAdministrator()) {
+            return redirect(route('admin.overview'));
+        } elseif ($user->canManageHotels()) {
+            return redirect(route('hotels.dashboard'));
+        } elseif ($user->canManageFerries()) {
+            return redirect(route('ferries.dashboard'));
+        } elseif ($user->canManageThemeParks()) {
+            return redirect(route('themeparks.dashboard'));
+        } else {
+            return redirect(route('dashboard'));
+        }
     }
 }

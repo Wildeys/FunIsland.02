@@ -20,4 +20,11 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
     }
+
+    public function run2(): void
+    {
+        $this->call([
+            RoleSeeder::class,
+        ]);
+    }
 }
