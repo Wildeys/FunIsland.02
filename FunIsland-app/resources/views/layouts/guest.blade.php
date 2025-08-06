@@ -67,7 +67,7 @@
                 <!-- Auth Form Container -->
                 <div class="w-full max-w-md sm:max-w-lg lg:max-w-xl">
                     <div class="bg-white/95 backdrop-blur-sm shadow-2xl rounded-2xl px-8 py-10 border border-white/20">
-                        
+                    {{$slot}}  
                     </div>
                 </div>
 

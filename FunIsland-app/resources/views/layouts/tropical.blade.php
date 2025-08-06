@@ -185,7 +185,8 @@
                     </div>
                 </div>
             @endif
-
+@section('content')
+@show
             @if (session('error'))
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
                     <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-r-lg">

@@ -19,22 +19,8 @@ use Illuminate\Support\Facades\Route;
 
 // Public Routes
 Route::get('/', function () {
-    return view('layouts.tropical');
+    return view('welcome');
 })->name('home');
-
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
-
-Route::post('/logout', function () {
-    return view('auth.tropical');
-})->name('logout');
-
-
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-
 
 
 

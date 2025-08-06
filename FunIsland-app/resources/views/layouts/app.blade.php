@@ -29,7 +29,8 @@
 
             <!-- Page Content -->
             <main>
-                
+                @section('content')
+                @show
             </main>
         </div>
     </body>
