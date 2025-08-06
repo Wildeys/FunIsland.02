@@ -4,22 +4,22 @@ A comprehensive tourism booking platform built with Laravel 12, featuring hotel 
 
 ## Features
 
-- **Multi-Service Booking**: Hotels, ferries, and theme parks
-- **Role-Based Access**: Customer, management, and admin interfaces
-- **User Authentication**: Complete registration and login system with Laravel Breeze
-- **Responsive Design**: Built with Tailwind CSS and Alpine.js
-- **Database Management**: Comprehensive migration system with seeders
+- Multi-Service Booking: Hotels, ferries, and theme parks
+- Role-Based Access: Customer, management, and admin interfaces
+- User Authentication: Complete registration and login system with Laravel Breeze
+- Responsive Design: Built with Tailwind CSS and Alpine.js
+- Database Management: Comprehensive migration system with seeders
 
 ## Requirements
 
 Before running this application, ensure you have the following installed:
 
-- **PHP**: Version 8.2 or higher
-- **Composer**: For PHP dependency management
-- **Node.js**: Version 16 or higher
-- **npm**: For frontend dependencies
-- **Database**: SQLite (default) or MySQL/PostgreSQL
-- **Web Server**: Apache/Nginx or use Laravel's built-in server
+- PHP: Version 8.2 or higher
+- Composer: For PHP dependency management
+- Node.js: Version 16 or higher
+- npm: For frontend dependencies
+- Database: MySQL (or SQLite/PostgreSQL as alternatives)
+- Web Server: Apache/Nginx or use Laravel's built-in server
 
 ## Quick Start
 
@@ -55,16 +55,17 @@ APP_URL=http://localhost:8000
 
 LOG_CHANNEL=stack
 
-DB_CONNECTION=sqlite
-# DB_DATABASE=database/database.sqlite
+# MySQL Database Configuration (for XAMPP use these settings)
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=funisland_app
+DB_USERNAME=root
+DB_PASSWORD=
 
-# For MySQL (alternative):
-# DB_CONNECTION=mysql
-# DB_HOST=127.0.0.1
-# DB_PORT=3306
-# DB_DATABASE=funisland
-# DB_USERNAME=your_username
-# DB_PASSWORD=your_password
+# For SQLite (alternative):
+# DB_CONNECTION=sqlite
+# DB_DATABASE=database/database.sqlite
 
 BROADCAST_DRIVER=log
 CACHE_DRIVER=file
@@ -82,13 +83,25 @@ MAIL_FROM_ADDRESS="hello@funisland.com"
 MAIL_FROM_NAME="${APP_NAME}"
 ```
 
-### 4. Application Setup
+### 4. Database Setup (MySQL)
+
+For XAMPP users:
+1. Start XAMPP and ensure MySQL is running
+2. Open phpMyAdmin (http://localhost/phpmyadmin)
+3. Create a new database named `funisland_app`
+4. Or use MySQL command line:
+
+```bash
+# Create the database (if MySQL is in your PATH):
+mysql -u root -e "CREATE DATABASE funisland_app;"
+
+# If MySQL command is not available, use phpMyAdmin interface instead
+```
+
+### 5. Application Setup
 ```bash
 # Generate application key
 php artisan key:generate
-
-# Create SQLite database file (if using SQLite)
-touch database/database.sqlite
 
 # Run database migrations
 php artisan migrate
@@ -97,7 +110,7 @@ php artisan migrate
 php artisan db:seed
 ```
 
-### 5. Build Frontend Assets
+### 6. Build Frontend Assets
 ```bash
 # For development (with file watching)
 npm run dev
@@ -106,7 +119,7 @@ npm run dev
 npm run build
 ```
 
-### 6. Start the Development Server
+### 7. Start the Development Server
 ```bash
 # Option 1: Laravel's built-in server
 php artisan serve
@@ -127,29 +140,28 @@ php artisan queue:work
 
 Visit [http://localhost:8000](http://localhost:8000) to access the application.
 
-## Database Setup Options
+## Alternative Database Setup Options
 
-### Option 1: SQLite (Default - Recommended for Development)
-```bash
-# Already configured in .env
-touch database/database.sqlite
-php artisan migrate
-php artisan db:seed
-```
+### Option 1: MySQL (Already configured above)
+The main setup instructions use MySQL as the primary database.
 
-### Option 2: MySQL
-1. Create a MySQL database named `funisland`
-2. Update your `.env` file:
+### Option 2: SQLite (Alternative for Development)
+If you prefer SQLite for development:
+
+1. Update your `.env` file:
 ```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=funisland
-DB_USERNAME=your_username
-DB_PASSWORD=your_password
+DB_CONNECTION=sqlite
+# Comment out or remove MySQL settings
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=funisland
+# DB_USERNAME=your_mysql_username
+# DB_PASSWORD=your_mysql_password
 ```
-3. Run migrations:
+
+2. Create SQLite database and run migrations:
 ```bash
+touch database/database.sqlite
 php artisan migrate
 php artisan db:seed
 ```
@@ -158,22 +170,22 @@ php artisan db:seed
 
 The application includes three user roles:
 
-1. **Customer**: Can browse and book services
-2. **Management**: Can manage their respective services (hotels, ferries, theme parks)
-3. **Admin**: Full system access and user management
+1. Customer: Can browse and book services
+2. Management: Can manage their respective services (hotels, ferries, theme parks)
+3. Admin: Full system access and user management
 
 Initial user accounts will be created through the seeder. Check the `RoleSeeder` for default credentials.
 
 ## Available Routes
 
-- **Home**: `/` - Landing page
-- **Browse Services**: 
+- Home: `/` - Landing page
+- Browse Services: 
   - `/browse/hotels` - Hotel listings
   - `/browse/ferries` - Ferry schedules
   - `/browse/themeparks` - Theme park tickets
-- **Authentication**: `/login`, `/register`
-- **Dashboard**: `/dashboard` - Role-based dashboard
-- **Profile**: `/profile` - User profile management
+- Authentication: `/login`, `/register`
+- Dashboard: `/dashboard` - Role-based dashboard
+- Profile: `/profile` - User profile management
 
 ## Development Commands
 
@@ -220,30 +232,36 @@ routes/
 
 ### Common Issues
 
-1. **Permission Errors**:
+1. Permission Errors:
 ```bash
 chmod -R 775 storage bootstrap/cache
 ```
 
-2. **Missing Application Key**:
+2. Missing Application Key:
 ```bash
 php artisan key:generate
 ```
 
-3. **Database Connection Errors**:
+3. Database Connection Errors:
    - Verify database credentials in `.env`
    - Ensure database exists (for MySQL/PostgreSQL)
    - Check file permissions for SQLite
+   - For XAMPP: Ensure MySQL service is running
 
-4. **Frontend Assets Not Loading**:
+4. Frontend Assets Not Loading:
 ```bash
 npm run build
 php artisan config:clear
 ```
 
-5. **Class Not Found Errors**:
+5. Class Not Found Errors:
 ```bash
 composer dump-autoload
+```
+
+6. PowerShell Script Execution Error (Windows):
+```bash
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 ## Production Deployment

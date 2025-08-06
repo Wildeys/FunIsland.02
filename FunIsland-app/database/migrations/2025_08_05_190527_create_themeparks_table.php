@@ -11,19 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('themepark_bookings', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('hotel_booking_id')->constrained('hotel_bookings');
-            $table->foreignId('themepark_activities_id')->constrained('themepark_activities');
-            $table->foreignId('themepark_activities_availability_id')->constrained('themepark_activities_availability');
-            $table->foreignId('user_id')->constrained('users');
-            $table->date('date');
-            $table->integer('number_of_guests');
-            $table->decimal('total_price', 10, 2);
-            $table->string('status')->default('pending');
-            $table->timestamps();
-        });
-        
         Schema::create('themepark', function (Blueprint $table) {
             $table->id();
             $table->foreignId('location_id')->constrained('locations');
@@ -59,13 +46,25 @@ return new class extends Migration
 
         Schema::create('themepark_activities_availability', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('themepark_activities_id')->constrained('themepark_activities');
+            $table->foreignId('themepark_activities_id')->constrained('themepark_activities')->name('tp_activities_avail_activities_id_fk');
             $table->date('date');
             $table->integer('count');
             $table->boolean('is_available')->default(true);
             $table->timestamps();
         });
 
+        Schema::create('themepark_bookings', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('hotel_booking_id')->constrained('hotel_bookings');
+            $table->foreignId('themepark_activities_id')->constrained('themepark_activities')->name('tp_bookings_activities_id_fk');
+            $table->foreignId('themepark_activities_availability_id')->constrained('themepark_activities_availability')->name('tp_bookings_avail_id_fk');
+            $table->foreignId('user_id')->constrained('users');
+            $table->date('date');
+            $table->integer('number_of_guests');
+            $table->decimal('total_price', 10, 2);
+            $table->string('status')->default('pending');
+            $table->timestamps();
+        });
         
     }
 

@@ -11,19 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hotel_bookings', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('hotel_id')->constrained('hotels');
-            $table->foreignId('hotel_room_id')->constrained('hotel_room');
-            $table->foreignId('user_id')->constrained('users');
-            $table->date('check_in_date');
-            $table->date('check_out_date');
-            $table->integer('number_of_guests');
-            $table->decimal('total_price', 10, 2);
-            $table->string('status')->default('pending');
-            $table->timestamps();
-        });
-        
         Schema::create('hotels', function (Blueprint $table) {
             $table->id();
             $table->foreignId('location_id')->constrained('locations');
@@ -55,6 +42,19 @@ return new class extends Migration
             $table->id();
             $table->foreignId('hotel_room_id')->constrained('hotel_room');
             $table->string('image');
+            $table->timestamps();
+        });
+
+        Schema::create('hotel_bookings', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('hotel_id')->constrained('hotels');
+            $table->foreignId('hotel_room_id')->constrained('hotel_room');
+            $table->foreignId('user_id')->constrained('users');
+            $table->date('check_in_date');
+            $table->date('check_out_date');
+            $table->integer('number_of_guests');
+            $table->decimal('total_price', 10, 2);
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }
