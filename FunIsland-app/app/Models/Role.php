@@ -25,6 +25,26 @@ class Role extends Model
         return $this->name === 'hotel_manager';
     }
 
+    public function isHotelStaff(): bool
+    {
+        return $this->name === 'hotel_staff';
+    }
+
+    public function isFerryOperator(): bool
+    {
+        return $this->name === 'ferry_operator';
+    }
+
+    public function isThemeParkManager(): bool
+    {
+        return $this->name === 'theme_park_manager';
+    }
+
+    public function isTicketingStaff(): bool
+    {
+        return $this->name === 'ticketing_staff';
+    }
+
     public function isCustomer(): bool
     {
         return $this->name === 'customer';

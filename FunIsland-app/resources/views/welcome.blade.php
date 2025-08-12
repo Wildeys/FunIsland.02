@@ -75,9 +75,9 @@
                             <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Spa & wellness</li>
                             <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Fine dining</li>
                         </ul>
-                        <a href="{{ route('hotels.index') }}" 
+                        <a href="{{ route('browse.hotels') }}" 
                            class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 px-6 rounded-full font-semibold hover:from-blue-600 hover:to-blue-700 transition-all inline-block text-center group-hover:shadow-lg">
-                            Explore Hotels →
+                            Browse Hotels →
                         </a>
                     </div>
                 </div>
@@ -99,9 +99,9 @@
                             <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Multiple departures</li>
                             <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Island hopping</li>
                         </ul>
-                        <a href="{{ route('ferries.index') }}" 
+                        <a href="{{ route('browse.ferries') }}" 
                            class="w-full bg-gradient-to-r from-teal-500 to-teal-600 text-white py-3 px-6 rounded-full font-semibold hover:from-teal-600 hover:to-teal-700 transition-all inline-block text-center group-hover:shadow-lg">
-                            Book Ferry →
+                            Browse Ferries →
                         </a>
                     </div>
                 </div>
@@ -123,9 +123,35 @@
                             <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Live shows</li>
                             <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Dining & shopping</li>
                         </ul>
-                        <a href="{{ route('themeparks.index') }}" 
+                        <a href="{{ route('browse.themeparks') }}" 
                            class="w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white py-3 px-6 rounded-full font-semibold hover:from-purple-600 hover:to-purple-700 transition-all inline-block text-center group-hover:shadow-lg">
-                            Visit Parks →
+                            Browse Theme Parks →
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beach Events Section -->
+            <div class="mt-16">
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300 group">
+                    <div class="h-48 bg-gradient-to-br from-orange-400 to-pink-600 flex items-center justify-center">
+                        <span class="text-8xl">🏖️</span>
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Beach Events & Activities</h3>
+                        <p class="text-gray-600 mb-6">
+                            Join exciting beach events, water activities, and island adventures! 
+                            From sunrise yoga to moonlight parties, create unforgettable memories in paradise.
+                        </p>
+                        <ul class="text-sm text-gray-600 mb-6 space-y-2">
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Beach yoga & fitness</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Water sports & diving</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Cultural shows & festivals</li>
+                            <li class="flex items-center"><span class="text-green-500 mr-2">✓</span> Adventure tours</li>
+                        </ul>
+                        <a href="{{ route('browse.events') }}" 
+                           class="w-full bg-gradient-to-r from-orange-500 to-pink-600 text-white py-3 px-6 rounded-full font-semibold hover:from-orange-600 hover:to-pink-700 transition-all inline-block text-center group-hover:shadow-lg">
+                            Browse Events →
                         </a>
                     </div>
                 </div>
@@ -150,8 +176,8 @@
                     <div class="text-lg opacity-90">Theme Parks</div>
                 </div>
                 <div class="transform hover:scale-105 transition-all">
-                    <div class="text-4xl md:text-5xl font-bold mb-2">1M+</div>
-                    <div class="text-lg opacity-90">Happy Visitors</div>
+                    <div class="text-4xl md:text-5xl font-bold mb-2">100+</div>
+                    <div class="text-lg opacity-90">Beach Events</div>
                 </div>
             </div>
         </div>
