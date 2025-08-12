@@ -11,25 +11,28 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('themepark', function (Blueprint $table) {
+        Schema::create('themeparks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('location_id')->constrained('locations');
             $table->string('name');
-            $table->string('description');
-            $table->string('rating')->default(0);
+            $table->text('description');
+            $table->decimal('rating', 3, 2)->default(0);
+            $table->enum('status', ['active', 'inactive', 'maintenance'])->default('active');
+            $table->boolean('featured')->default(false);
+            $table->string('image_url')->nullable();
             $table->timestamps();
         });
 
         Schema::create('themepark_images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('themepark_id')->constrained('themepark');
+            $table->foreignId('themepark_id')->constrained('themeparks');
             $table->string('image');
             $table->timestamps();
         });
 
         Schema::create('themepark_activities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('themepark_id')->constrained('themepark');
+            $table->foreignId('themepark_id')->constrained('themeparks');
             $table->string('name');
             $table->string('description');
             $table->decimal('price', 10, 2);

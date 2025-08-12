@@ -49,20 +49,20 @@
 
                         <!-- Desktop Navigation -->
                         <div class="hidden md:ml-10 md:flex md:space-x-8">
-                            <a href="{{ route('hotels.index') }}" 
-                               class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('hotels.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50' }} transition-colors">
+                            <a href="{{ auth()->check() ? route('hotels.index') : route('browse.hotels') }}" 
+                               class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('hotels.*') || request()->routeIs('browse.hotels') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50' }} transition-colors">
                                 🏨 Hotels
                             </a>
-                            <a href="{{ route('ferries.index') }}" 
-                               class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('ferries.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50' }} transition-colors">
+                            <a href="{{ auth()->check() ? route('ferries.index') : route('browse.ferries') }}" 
+                               class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('ferries.*') || request()->routeIs('browse.ferries') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50' }} transition-colors">
                                 🚤 Ferries
                             </a>
-                            <a href="{{ route('themeparks.index') }}" 
-                               class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('themeparks.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50' }} transition-colors">
+                            <a href="{{ auth()->check() ? route('themeparks.index') : route('browse.themeparks') }}" 
+                               class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('themeparks.*') || request()->routeIs('browse.themeparks') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50' }} transition-colors">
                                 🎢 Theme Parks
                             </a>
-                            <a href=""
-                               class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('beaches.*') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50' }} transition-colors">
+                            <a href="{{ auth()->check() ? route('events.index') : route('browse.events') }}"
+                               class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('events.*') || request()->routeIs('browse.events') ? 'text-blue-600 bg-blue-50' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50' }} transition-colors">
                                 🏖️ Beach Events
                             </a>
                         </div>
@@ -135,19 +135,19 @@
                      x-data="{ open: false }" 
                      class="md:hidden bg-white border-t border-gray-200">
                     <div class="px-2 pt-2 pb-3 space-y-1">
-                        <a href="{{ route('hotels.index') }}" 
+                        <a href="{{ auth()->check() ? route('hotels.index') : route('browse.hotels') }}" 
                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50">
                             🏨 Hotels
                         </a>
-                        <a href="{{ route('ferries.index') }}" 
+                        <a href="{{ auth()->check() ? route('ferries.index') : route('browse.ferries') }}" 
                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50">
                             🚤 Ferries
                         </a>
-                        <a href="{{ route('themeparks.index') }}" 
+                        <a href="{{ auth()->check() ? route('themeparks.index') : route('browse.themeparks') }}" 
                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50">
                             🎢 Theme Parks
                         </a>
-                        <a href="" 
+                        <a href="{{ auth()->check() ? route('events.index') : route('browse.events') }}" 
                            class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50">
                             🏖️ Beach Events
                         </a>
@@ -185,8 +185,7 @@
                     </div>
                 </div>
             @endif
-@section('content')
-@show
+
             @if (session('error'))
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6">
                     <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-r-lg">
@@ -204,7 +203,12 @@
                 </div>
             @endif
 
-           
+            <!-- Main Content -->
+            @isset($slot)
+                {{ $slot }}
+            @else
+                @yield('content')
+            @endisset
         </main>
 
         <!-- Footer -->

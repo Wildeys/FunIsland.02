@@ -13,7 +13,30 @@ class FerryController extends Controller
     public function index()
     {
         $ferries = ferry::all();
-        return view('ferries.index', compact('ferries'));
+        
+        if (auth()->check() && auth()->user()->hasRole('customer')) {
+            return view('ferries.customer.index', compact('ferries'));
+        }
+        
+        return view('ferries.management.index', compact('ferries'));
+    }
+
+    /**
+     * Public browsing without authentication
+     */
+    public function browse()
+    {
+        $ferries = ferry::where('status', 'active')
+            ->with(['departureLocation', 'arrivalLocation'])
+            ->orderBy('departure_time')
+            ->paginate(12);
+        
+        $featuredRoutes = ferry::where('status', 'active')
+            ->where('featured', true)
+            ->limit(3)
+            ->get();
+        
+        return view('ferries.browse', compact('ferries', 'featuredRoutes'));
     }
 
     /**

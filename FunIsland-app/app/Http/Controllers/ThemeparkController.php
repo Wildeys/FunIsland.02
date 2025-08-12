@@ -13,7 +13,30 @@ class ThemeparkController extends Controller
     public function index()
     {
         $themeparks = themepark::all();
-        return view('themeparks.index', compact('themeparks'));
+        
+        if (auth()->check() && auth()->user()->hasRole('customer')) {
+            return view('themeparks.customer.index', compact('themeparks'));
+        }
+        
+        return view('themeparks.management.index', compact('themeparks'));
+    }
+
+    /**
+     * Public browsing without authentication
+     */
+    public function browse()
+    {
+        $themeparks = themepark::where('status', 'active')
+            ->with(['location'])
+            ->orderBy('name')
+            ->paginate(12);
+        
+        $featuredParks = themepark::where('status', 'active')
+            ->where('featured', true)
+            ->limit(3)
+            ->get();
+        
+        return view('themeparks.browse', compact('themeparks', 'featuredParks'));
     }
 
     /**

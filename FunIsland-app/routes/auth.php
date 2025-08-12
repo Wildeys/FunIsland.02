@@ -89,11 +89,18 @@ Route::middleware('auth')->group(function () {
         Route::get('/ferries/{ferry}', [FerryController::class, 'show'])->name('ferries.show');
         Route::get('/themeparks', [ThemeparkController::class, 'index'])->name('themeparks.index');
         Route::get('/themeparks/{themepark}', [ThemeparkController::class, 'show'])->name('themeparks.show');
+        Route::get('/events', [\App\Http\Controllers\EventController::class, 'index'])->name('events.index');
+        Route::get('/events/{event}', [\App\Http\Controllers\EventController::class, 'show'])->name('events.show');
         
         // Booking routes for customers
         Route::post('/hotels/{hotel}/book', [BookingController::class, 'storeHotelBooking'])->name('bookings.hotel.store');
         Route::post('/ferries/{ferry}/book', [BookingController::class, 'storeFerryBooking'])->name('bookings.ferry.store');
         Route::post('/themeparks/{themepark}/book', [BookingController::class, 'storeThemeparkBooking'])->name('bookings.themepark.store');
+        Route::post('/events/{event}/book', [\App\Http\Controllers\EventController::class, 'book'])->name('events.book');
+        Route::get('/events/booking/{booking}/confirmation', [\App\Http\Controllers\EventController::class, 'bookingConfirmation'])->name('events.booking.confirmation');
+        
+        // General booking management
+        Route::get('/bookings/{booking}', [\App\Http\Controllers\BookingController::class, 'show'])->name('bookings.show');
     });
 
     // Administrator Routes
