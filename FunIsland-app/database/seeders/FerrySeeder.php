@@ -56,6 +56,8 @@ class FerrySeeder extends Seeder
                 $this->createFerrySchedules($ferry);
             }
         }
+
+        $this->command->info('seeded successfully!');
     }
 
     private function createFerrySchedules($ferry)

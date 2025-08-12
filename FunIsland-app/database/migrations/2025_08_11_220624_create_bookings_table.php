@@ -19,7 +19,7 @@ return new class extends Migration
             
             // Hotel booking fields
             $table->foreignId('hotel_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('room_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('hotel_room_id')->nullable()->constrained('hotel_rooms')->onDelete('cascade');
             
             // Ferry booking fields  
             $table->foreignId('ferry_id')->nullable()->constrained()->onDelete('cascade');

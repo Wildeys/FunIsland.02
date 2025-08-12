@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Room extends Model
+class room extends Model
 {
+
+    protected $table = 'hotel_rooms';
     protected $fillable = [
         'hotel_id',
         'room_number',

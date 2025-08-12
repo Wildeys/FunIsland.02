@@ -76,11 +76,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('themeparks');
         Schema::dropIfExists('themepark_bookings');
-        Schema::dropIfExists('themepark_activities');
         Schema::dropIfExists('themepark_activities_availability');
         Schema::dropIfExists('themepark_activities_images');
+        Schema::dropIfExists('themepark_activities');
         Schema::dropIfExists('themepark_images');
+        Schema::dropIfExists('themeparks');
     }
 };

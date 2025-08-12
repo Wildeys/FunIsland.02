@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ferry extends Model
 {
+    protected $table = 'ferries';
     protected $fillable = [
         'location_id',
         'name',

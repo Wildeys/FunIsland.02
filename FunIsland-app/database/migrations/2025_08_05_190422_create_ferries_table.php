@@ -50,8 +50,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ferries');
-        Schema::dropIfExists('ferry_schedule');
         Schema::dropIfExists('ferry_ticketing');
+        Schema::dropIfExists('ferry_schedule');
+        Schema::dropIfExists('ferries');
     }
 };
