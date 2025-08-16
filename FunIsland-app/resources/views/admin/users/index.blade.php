@@ -1,7 +1,9 @@
 <x-management-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
+        <div class="flex items-end justify-between>
             <h1 class="text-2xl font-bold text-gray-900">User Management</h1>
+            <div>
+            </div>
             <a href="{{ route('admin.users.create') }}" 
                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
                 <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

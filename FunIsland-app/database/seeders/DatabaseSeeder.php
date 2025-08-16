@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
+            UserSeeder::class,
             LocationSeeder::class,
             HotelSeeder::class,
             RoomSeeder::class,
@@ -22,13 +23,5 @@ class DatabaseSeeder extends Seeder
             FerrySeeder::class,
             EventSeeder::class,
         ]);
-
-        // Create test users if they don't exist
-        if (!User::where('email', 'test@example.com')->exists()) {
-            User::factory()->create([
-                'name' => 'Test User',
-                'email' => 'test@example.com',
-            ]);
-        }
     }
 }
