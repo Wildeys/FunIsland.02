@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\themepark;
 use App\Models\Location;
@@ -17,46 +18,47 @@ class ThemeparkSeeder extends Seeder
             return;
         }
 
+        // Maafushi-themed attractions and adventure parks
         $themeparks = [
             [
-                'name' => 'Paradise Adventure Park',
-                'description' => 'Experience thrilling rides and attractions in a tropical paradise setting. From heart-pounding roller coasters to family-friendly water rides, Paradise Adventure Park offers excitement for all ages.',
-                'rating' => 4.8,
+                'name' => 'Maafushi Adventure Park',
+                'description' => 'A small adventure park with water-based attractions and family-friendly activities. Experience the best of Maldivian marine adventures.',
+                'rating' => 4.2,
                 'status' => 'active',
                 'featured' => true,
-                'image_url' => 'https://images.unsplash.com/photo-1509048191080-d2dc8c95a88e?w=800&h=600&fit=crop',
+                'image_url' => '/images/themeparks/maafushi-adventure-park.jpg',
             ],
             [
-                'name' => 'Tropical Fun Zone',
-                'description' => 'A family-friendly theme park featuring exciting games, gentle rides, and educational exhibits about tropical wildlife. Perfect for younger children and families.',
+                'name' => 'Bikini Beach Activities Center',
+                'description' => 'Beach-based adventure center offering water sports, volleyball courts, and beach games. Perfect for families and groups.',
+                'rating' => 4.0,
+                'status' => 'active',
+                'featured' => true,
+                'image_url' => '/images/themeparks/bikini-beach-activities.jpg',
+            ],
+            [
+                'name' => 'Coral Discovery Center',
+                'description' => 'Educational marine park featuring coral displays, snorkeling experiences, and underwater observation areas. Learn about Maldivian marine life.',
                 'rating' => 4.5,
                 'status' => 'active',
-                'featured' => true,
-                'image_url' => 'https://images.unsplash.com/photo-1522057384400-681b421cfebc?w=800&h=600&fit=crop',
+                'featured' => false,
+                'image_url' => '/images/themeparks/coral-discovery-center.jpg',
             ],
             [
-                'name' => 'Island Water World',
-                'description' => 'Cool off in our massive water park with slides, lazy rivers, wave pools, and splash zones. The perfect way to beat the tropical heat while having endless fun.',
-                'rating' => 4.6,
+                'name' => 'Water Sports Adventure Zone',
+                'description' => 'Action-packed water sports center with jet skiing, parasailing, windsurfing, and diving experiences. Adrenaline-filled Maldivian adventures.',
+                'rating' => 4.3,
                 'status' => 'active',
                 'featured' => false,
-                'image_url' => 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&h=600&fit=crop',
+                'image_url' => '/images/themeparks/water-sports-adventure.jpg',
             ],
             [
-                'name' => 'Adventure Cove',
-                'description' => 'Embark on an adventure through themed areas including pirate coves, jungle expeditions, and treasure hunts. Interactive experiences that bring stories to life.',
-                'rating' => 4.4,
-                'status' => 'active',
-                'featured' => false,
-                'image_url' => 'https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=800&h=600&fit=crop',
-            ],
-            [
-                'name' => 'Sunset Thrills Park',
-                'description' => 'Open until late evening, experience the magic of theme park rides under the setting sun and twinkling lights. Features the islands tallest roller coaster.',
-                'rating' => 4.7,
+                'name' => 'Maldivian Heritage Park',
+                'description' => 'Cultural theme park showcasing traditional Maldivian life, local crafts, music, and dance performances. Experience authentic island culture.',
+                'rating' => 4.1,
                 'status' => 'active',
                 'featured' => true,
-                'image_url' => 'https://images.unsplash.com/photo-1596496050755-c923e73e42e1?w=800&h=600&fit=crop',
+                'image_url' => '/images/themeparks/maldivian-heritage-park.jpg',
             ],
         ];
 

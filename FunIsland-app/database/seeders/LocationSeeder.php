@@ -13,36 +13,37 @@ class LocationSeeder extends Seeder
      */
     public function run(): void
     {
+        // Maafushi Island and surrounding locations
         $locations = [
             [
-                'location_name' => 'Paradise Beach',
-                'latitude' => 25.7617,
-                'longitude' => -80.1918
+                'location_name' => 'Maafushi Island',
+                'latitude' => 3.94028,
+                'longitude' => 73.48889
             ],
             [
-                'location_name' => 'Sunset Cove',
-                'latitude' => 25.7748,
-                'longitude' => -80.1977
+                'location_name' => 'Bikini Beach',
+                'latitude' => 3.94100,
+                'longitude' => 73.48900
             ],
             [
-                'location_name' => 'Marina Bay',
-                'latitude' => 25.7589,
-                'longitude' => -80.1889
+                'location_name' => 'Water Sports Center',
+                'latitude' => 3.93950,
+                'longitude' => 73.48850
             ],
             [
-                'location_name' => 'Coral Gardens',
-                'latitude' => 25.7701,
-                'longitude' => -80.1950
+                'location_name' => 'Maafushi Harbor',
+                'latitude' => 3.93980,
+                'longitude' => 73.48870
             ],
             [
-                'location_name' => 'Tropical Village',
-                'latitude' => 25.7655,
-                'longitude' => -80.1925
+                'location_name' => 'Coral Reef Point',
+                'latitude' => 3.94150,
+                'longitude' => 73.48950
             ],
             [
-                'location_name' => 'Adventure Island',
-                'latitude' => 25.7800,
-                'longitude' => -80.2000
+                'location_name' => 'Adventure Bay',
+                'latitude' => 3.93900,
+                'longitude' => 73.48800
             ]
         ];
 

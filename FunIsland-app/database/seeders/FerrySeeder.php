@@ -16,32 +16,37 @@ class FerrySeeder extends Seeder
      */
     public function run(): void
     {
-        // Create ferries
+        // Real Maafushi Island Ferries
         $ferries = [
             [
-                'name' => 'Island Explorer',
-                'location_id' => 1, // Paradise Beach
-                'capacity' => 150,
+                'name' => 'Maafushi Public Ferry',
+                'location_id' => 4, // Maafushi Harbor
+                'capacity' => 50,
             ],
             [
-                'name' => 'Sunset Cruiser',
-                'location_id' => 2, // Sunset Cove
-                'capacity' => 200,
+                'name' => 'iCom Tours Speedboat',
+                'location_id' => 3, // Water Sports Center
+                'capacity' => 30,
             ],
             [
-                'name' => 'Marina Express',
-                'location_id' => 3, // Marina Bay
-                'capacity' => 100,
+                'name' => 'MaafushiTours Speedboat',
+                'location_id' => 3, // Water Sports Center
+                'capacity' => 25,
             ],
             [
-                'name' => 'Coral Navigator',
-                'location_id' => 4, // Coral Gardens
-                'capacity' => 120,
+                'name' => 'Maafushi Express',
+                'location_id' => 4, // Maafushi Harbor
+                'capacity' => 40,
             ],
             [
-                'name' => 'Adventure Seeker',
-                'location_id' => 6, // Adventure Island
-                'capacity' => 180,
+                'name' => 'Adventure Island Ferry',
+                'location_id' => 6, // Adventure Bay
+                'capacity' => 35,
+            ],
+            [
+                'name' => 'Coral Reef Explorer',
+                'location_id' => 5, // Coral Reef Point
+                'capacity' => 28,
             ]
         ];
 

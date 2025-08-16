@@ -6,6 +6,7 @@ use App\Http\Controllers\FerryController;
 use App\Http\Controllers\ThemeparkController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\BeachController;
+use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,11 @@ Route::get('/browse/ferries', [FerryController::class, 'browse'])->name('browse.
 Route::get('/browse/themeparks', [ThemeparkController::class, 'browse'])->name('browse.themeparks');
 Route::get('/browse/events', [App\Http\Controllers\EventController::class, 'browse'])->name('browse.events');
 Route::get('/browse/beaches', [BeachController::class, 'browse'])->name('browse.beaches');
+
+// Interactive Map (accessible to all)
+Route::get('/map', [LocationController::class, 'map'])->name('locations.map');
+Route::get('/api/locations', [LocationController::class, 'getLocationData'])->name('api.locations');
+Route::get('/api/locations/{id}', [LocationController::class, 'getLocationDetails'])->name('api.locations.details');
 
 // Authenticated user routes
 Route::middleware('auth')->group(function () {

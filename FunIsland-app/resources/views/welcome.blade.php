@@ -156,8 +156,44 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Interactive Map Preview -->
+            <div class="mt-20">
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                    <div class="p-8 border-b border-gray-100">
+                        <div class="text-center">
+                            <h3 class="text-3xl font-bold text-gray-800 mb-4">🗺️ Explore FunIsland</h3>
+                            <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
+                                Discover all our amazing locations on this interactive map. Click on markers to see hotels, ferries, and theme parks at each location.
+                            </p>
+                            <a href="{{ route('locations.map') }}" 
+                               class="inline-flex items-center bg-gradient-to-r from-blue-500 to-teal-600 text-white px-6 py-3 rounded-full font-semibold hover:from-blue-600 hover:to-teal-700 transition-all">
+                                <span class="mr-2">🗺️</span>
+                                View Full Interactive Map
+                            </a>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <!-- Mini Map Container -->
+                        <div id="mini-map" style="height: 400px; width: 100%;"></div>
+                        
+                        <!-- Overlay for click-through to full map -->
+                        <div class="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity cursor-pointer" 
+                             onclick="window.location.href='{{ route('locations.map') }}'">
+                            <div class="bg-white/90 backdrop-blur-sm rounded-xl px-6 py-3 text-gray-800 font-semibold">
+                                🗺️ View Full Map
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Leaflet CSS for Mini Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin=""/>
 
     <!-- Stats Section -->
     <div class="py-16 beach-gradient">
@@ -218,4 +254,116 @@
             @endguest
         </div>
     </div>
+
+    <!-- Leaflet JavaScript for Mini Map -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+            crossorigin=""></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize mini map
+        const miniMap = L.map('mini-map', {
+            zoomControl: false,
+            scrollWheelZoom: false,
+            doubleClickZoom: false,
+            dragging: false,
+            attributionControl: false
+        }).setView([3.94028, 73.48889], 13);
+
+        // Add tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(miniMap);
+
+        // Maafushi Island location data (static for welcome page)
+        const sampleLocations = [
+            {
+                name: 'Maafushi Island',
+                lat: 3.94028,
+                lng: 73.48889,
+                services: ['hotels', 'themeparks']
+            },
+            {
+                name: 'Bikini Beach',
+                lat: 3.94100,
+                lng: 73.48900,
+                services: ['hotels', 'themeparks']
+            },
+            {
+                name: 'Water Sports Center',
+                lat: 3.93950,
+                lng: 73.48850,
+                services: ['ferries', 'themeparks']
+            },
+            {
+                name: 'Maafushi Harbor',
+                lat: 3.93980,
+                lng: 73.48870,
+                services: ['ferries', 'hotels']
+            },
+            {
+                name: 'Coral Reef Point',
+                lat: 3.94150,
+                lng: 73.48950,
+                services: ['hotels', 'themeparks']
+            },
+            {
+                name: 'Adventure Bay',
+                lat: 3.93900,
+                lng: 73.48800,
+                services: ['ferries', 'themeparks']
+            }
+        ];
+
+        // Create custom icons
+        const createMiniIcon = (services) => {
+            let color = '#3b82f6';
+            if (services.length > 1) {
+                color = 'linear-gradient(45deg, #f59e0b 33%, #3b82f6 33%, #3b82f6 66%, #10b981 66%)';
+            } else if (services.includes('hotels')) {
+                color = '#f59e0b';
+            } else if (services.includes('ferries')) {
+                color = '#3b82f6';
+            } else if (services.includes('themeparks')) {
+                color = '#10b981';
+            }
+            
+            return L.divIcon({
+                className: 'custom-mini-marker',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8],
+                html: `<div style="background: ${color}; width: 100%; height: 100%; border-radius: 50%; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.3);"></div>`
+            });
+        };
+
+        // Add markers
+        sampleLocations.forEach(location => {
+            const serviceIcons = {
+                hotels: '🏨',
+                ferries: '⛴️',
+                themeparks: '🎢'
+            };
+            
+            const serviceList = location.services.map(service => serviceIcons[service]).join(' ');
+            
+            L.marker([location.lat, location.lng], {
+                icon: createMiniIcon(location.services)
+            })
+            .bindPopup(`
+                <div style="text-align: center; font-size: 12px;">
+                    <strong>${location.name}</strong><br>
+                    <span style="font-size: 14px;">${serviceList}</span>
+                </div>
+            `)
+            .addTo(miniMap);
+        });
+
+        // Fit bounds to show all markers
+        const group = new L.featureGroup(sampleLocations.map(loc => 
+            L.marker([loc.lat, loc.lng])
+        ));
+        miniMap.fitBounds(group.getBounds().pad(0.1));
+    });
+    </script>
 @endsection

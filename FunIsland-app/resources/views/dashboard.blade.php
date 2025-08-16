@@ -56,6 +56,27 @@
                 </a>
             </div>
 
+            <!-- Interactive Map Button -->
+            <div class="flex justify-center mb-12">
+                <a href="{{ route('locations.map') }}" 
+                   class="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all transform hover:scale-105 max-w-md">
+                    <div class="text-center">
+                        <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-4xl">🗺️</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-3">Explore Island Map</h3>
+                        <p class="text-white/90 mb-4">Discover all locations, hotels, ferries, and theme parks on our interactive map</p>
+                        <div class="flex items-center justify-center space-x-2 text-sm text-white/80">
+                            <span>🏨 Hotels</span>
+                            <span>•</span>
+                            <span>⛴️ Ferries</span>
+                            <span>•</span>
+                            <span>🎢 Parks</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
             <!-- My Bookings -->
             <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
                 <div class="flex items-center justify-between mb-6">
