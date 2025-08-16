@@ -101,7 +101,7 @@
                 <h2 class="text-3xl font-bold mb-4">Create Your Beach Memories</h2>
                 <p class="text-xl mb-6">Join thousands of guests who have experienced our amazing beach events</p>
                 @auth
-                    <a href="{{ route('beaches.index') }}" 
+                    <a href="{{ route('beaches.customer.index') }}" 
                        class="bg-white text-orange-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
                         View My Events
                     </a>

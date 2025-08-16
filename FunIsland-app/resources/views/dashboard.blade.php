@@ -11,7 +11,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <!-- Quick Actions -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 -mt-20 relative z-10">
-                <a href="{{ route('hotels.index') }}" 
+                <a href="{{ route('hotels.customer.index') }}" 
                    class="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all transform hover:scale-105">
                     <div class="text-center">
                         <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -22,7 +22,7 @@
                     </div>
                 </a>
 
-                <a href="{{ route('ferries.index') }}" 
+                <a href="{{ route('ferries.customer.index') }}" 
                    class="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all transform hover:scale-105">
                     <div class="text-center">
                         <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -33,7 +33,7 @@
                     </div>
                 </a>
 
-                <a href="{{ route('themeparks.index') }}" 
+                <a href="{{ route('themeparks.customer.index') }}" 
                    class="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all transform hover:scale-105">
                     <div class="text-center">
                         <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -44,7 +44,7 @@
                     </div>
                 </a>
 
-                <a href="{{ route('beaches.index') }}" 
+                <a href="{{ route('beaches.customer.index') }}" 
                    class="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition-all transform hover:scale-105">
                     <div class="text-center">
                         <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -89,7 +89,7 @@
                     <div class="text-6xl mb-4">📅</div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">No bookings yet</h3>
                     <p class="text-gray-600 mb-6">Start planning your perfect island getaway!</p>
-                    <a href="{{ route('hotels.index') }}" 
+                    <a href="{{ route('hotels.customer.index') }}" 
                        class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all">
                         Book Now
                     </a>

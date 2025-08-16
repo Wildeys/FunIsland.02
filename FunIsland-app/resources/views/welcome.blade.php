@@ -24,7 +24,7 @@
                                 🏖️ Already a Member?
                             </a>
                         @else
-                            <a href="{{ route('hotels.index') }}" 
+                            <a href="{{ route('hotels.customer.index') }}" 
                                class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold py-4 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-xl">
                                 🏨 Explore Hotels
                             </a>
@@ -242,7 +242,7 @@
                 </div>
             @else
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="{{ route('hotels.index') }}" 
+                    <a href="{{ route('hotels.customer.index') }}" 
                        class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-bold py-4 px-8 rounded-full text-lg transition-all transform hover:scale-105 shadow-xl">
                         🏨 Book Your Stay
                     </a>

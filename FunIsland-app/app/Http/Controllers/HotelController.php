@@ -21,13 +21,38 @@ class HotelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $hotels = Hotel::with(['location'])->paginate(12);
+        $query = hotel::with(['location', 'rooms']);
         
+        // For customer view, only show active hotels
         if (auth()->user()->hasRole('customer')) {
+            $query->where('status', 'active');
+            $hotels = $query->paginate(12);
             return view('hotels.customer.index', compact('hotels'));
         }
+        
+        // Management view with search and filters
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhereHas('location', function($locationQuery) use ($search) {
+                      $locationQuery->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        if ($request->filled('featured')) {
+            $query->where('featured', $request->featured == '1');
+        }
+        
+        $hotels = $query->orderBy('created_at', 'desc')->paginate(12);
         
         return view('hotels.management.index', compact('hotels'));
     }
@@ -60,7 +85,7 @@ class HotelController extends Controller
         }
         
         $locations = Location::all();
-        return view('hotels.create', compact('locations'));
+        return view('hotels.management.create', compact('locations'));
     }
 
     /**
@@ -74,14 +99,23 @@ class HotelController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'required|string|max:2000',
             'location_id' => 'required|exists:locations,id',
-            'rating' => 'nullable|numeric|between:0,5'
+            'price_per_night' => 'required|numeric|min:0|max:9999.99',
+            'amenities' => 'nullable|array',
+            'amenities.*' => 'string|max:100',
+            'contact_info' => 'nullable|array',
+            'contact_info.phone' => 'nullable|string|max:20',
+            'contact_info.email' => 'nullable|email|max:100',
+            'contact_info.website' => 'nullable|url|max:255',
+            'image_url' => 'nullable|url|max:255',
+            'status' => 'required|in:active,inactive,maintenance',
+            'featured' => 'boolean'
         ]);
 
-        $hotel = Hotel::create($validated);
+        $hotel = hotel::create($validated);
 
-        return redirect()->route('hotels.index')
+        return redirect()->route('hotels.management.index')
             ->with('success', 'Hotel created successfully!');
     }
 
@@ -98,7 +132,7 @@ class HotelController extends Controller
             return view('hotels.customer.show', compact('hotel'));
         }
         
-        return view('hotels.show', compact('hotel'));
+        return view('hotels.management.show', compact('hotel'));
     }
 
     /**
@@ -111,13 +145,13 @@ class HotelController extends Controller
         }
         
         $locations = Location::all();
-        return view('hotels.edit', compact('hotel', 'locations'));
+        return view('hotels.management.edit', compact('hotel', 'locations'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Hotel $hotel)
+    public function update(Request $request, hotel $hotel)
     {
         if (!auth()->user()->canManageHotels()) {
             abort(403, 'Unauthorized');
@@ -125,14 +159,23 @@ class HotelController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'required|string|max:2000',
             'location_id' => 'required|exists:locations,id',
-            'rating' => 'nullable|numeric|between:0,5'
+            'price_per_night' => 'required|numeric|min:0|max:9999.99',
+            'amenities' => 'nullable|array',
+            'amenities.*' => 'string|max:100',
+            'contact_info' => 'nullable|array',
+            'contact_info.phone' => 'nullable|string|max:20',
+            'contact_info.email' => 'nullable|email|max:100',
+            'contact_info.website' => 'nullable|url|max:255',
+            'image_url' => 'nullable|url|max:255',
+            'status' => 'required|in:active,inactive,maintenance',
+            'featured' => 'boolean'
         ]);
 
         $hotel->update($validated);
 
-        return redirect()->route('hotels.index')
+        return redirect()->route('hotels.management.index')
             ->with('success', 'Hotel updated successfully!');
     }
 
@@ -147,7 +190,7 @@ class HotelController extends Controller
 
         $hotel->delete();
 
-        return redirect()->route('hotels.index')
+        return redirect()->route('hotels.management.index')
             ->with('success', 'Hotel deleted successfully!');
     }
 

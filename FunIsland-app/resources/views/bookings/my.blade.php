@@ -94,19 +94,19 @@
                     <p class="text-gray-600 mb-8">Start planning your perfect island getaway!</p>
                     
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-                        <a href="{{ route('hotels.index') }}" 
+                        <a href="{{ route('hotels.customer.index') }}" 
                            class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
                             Book Hotels
                         </a>
-                        <a href="{{ route('ferries.index') }}" 
+                        <a href="{{ route('ferries.customer.index') }}" 
                            class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors">
                             Ferry Tickets
                         </a>
-                        <a href="{{ route('themeparks.index') }}" 
+                        <a href="{{ route('themeparks.customer.index') }}" 
                            class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition-colors">
                             Theme Parks
                         </a>
-                        <a href="{{ route('beaches.index') }}" 
+                        <a href="{{ route('beaches.customer.index') }}" 
                            class="bg-yellow-600 text-white px-6 py-3 rounded-lg hover:bg-yellow-700 transition-colors">
                             Beach Events
                         </a>

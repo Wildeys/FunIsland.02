@@ -12,11 +12,21 @@ class ferry extends Model
     protected $fillable = [
         'location_id',
         'name',
-        'capacity'
+        'capacity',
+        'price',
+        'departure_location',
+        'arrival_location',
+        'status',
+        'description'
     ];
 
     protected $casts = [
-        'capacity' => 'integer'
+        'capacity' => 'integer',
+        'price' => 'decimal:2'
+    ];
+
+    protected $attributes = [
+        'status' => 'active'
     ];
 
     // Relationships

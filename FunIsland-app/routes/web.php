@@ -48,11 +48,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/beaches/book', [BeachController::class, 'book'])->name('beaches.book');
     
     // Index routes for authenticated users
-    Route::get('/hotels', [HotelController::class, 'index'])->name('hotels.index');
-    Route::get('/ferries', [FerryController::class, 'index'])->name('ferries.index');
-    Route::get('/themeparks', [ThemeparkController::class, 'index'])->name('themeparks.index');
+    Route::get('/hotels', [HotelController::class, 'index'])->name('hotels.customer.index');
+    Route::get('/ferries', [FerryController::class, 'index'])->name('ferries.customer.index');
+    Route::get('/themeparks', [ThemeparkController::class, 'index'])->name('themeparks.customer.index');
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
-    Route::get('/beaches', [BeachController::class, 'index'])->name('beaches.index');
+    Route::get('/beaches', [BeachController::class, 'index'])->name('beaches.customer.index');
     Route::get('/beaches/{id}', [BeachController::class, 'show'])->name('beaches.show');
     
     // Booking management routes

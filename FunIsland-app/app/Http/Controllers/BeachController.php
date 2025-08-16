@@ -55,7 +55,7 @@ class BeachController extends Controller
             ]
         ];
 
-        return view('beaches.index', compact('beachEvents'));
+        return view('beaches.customer.index', compact('beachEvents'));
     }
 
     /**
@@ -91,7 +91,7 @@ class BeachController extends Controller
         // Here you would typically create a booking record
         // For now, just redirect with success message
         
-        return redirect()->route('beaches.index')
+        return redirect()->route('beaches.customer.index')
             ->with('success', 'Beach event booked successfully!');
     }
 

@@ -1,17 +1,15 @@
 <x-management-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Ferry Management Dashboard</h1>
                 <p class="text-sm text-gray-600">Manage ferry operations and schedules</p>
             </div>
             <div class="flex items-center space-x-3">
-                <a href="{{ route('ferries.create') }}" 
+                <a href="{{ route('ferries.management.create') }}" 
                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
                     Add New Ferry
                 </a>
             </div>
-        </div>
     </x-slot>
 
     <div class="p-6">
@@ -36,7 +34,7 @@
                 </div>
                 <div class="bg-blue-700 px-5 py-3">
                     <div class="text-sm">
-                        <a href="{{ route('ferries.index') }}" class="font-medium text-blue-200 hover:text-white">
+                        <a href="{{ route('ferries.management.index') }}" class="font-medium text-blue-200 hover:text-white">
                             View all ferries
                         </a>
                     </div>
@@ -131,7 +129,7 @@
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <a href="{{ route('ferries.create') }}" 
+                        <a href="{{ route('ferries.management.create') }}" 
                            class="flex items-center p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
                             <div class="flex-shrink-0">
                                 <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
@@ -146,7 +144,7 @@
                             </div>
                         </a>
 
-                        <a href="{{ route('ferries.index') }}" 
+                        <a href="{{ route('ferries.management.index') }}" 
                            class="flex items-center p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
                             <div class="flex-shrink-0">
                                 <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
@@ -263,7 +261,7 @@
                             You have {{ $stats['total_ferries'] }} ferries with {{ $stats['active_routes'] }} active routes.
                         </p>
                         <div class="mt-6">
-                            <a href="{{ route('ferries.index') }}" 
+                            <a href="{{ route('ferries.management.index') }}" 
                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>

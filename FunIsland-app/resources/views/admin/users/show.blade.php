@@ -1,6 +1,6 @@
 <x-management-layout>
     <x-slot name="header">
-        <div class="flex items-center justify-between">
+        
             <div class="flex items-center space-x-4">
                 <a href="{{ route('admin.users') }}" 
                    class="text-gray-500 hover:text-gray-700 transition-colors">
@@ -19,7 +19,7 @@
                     Edit User
                 </a>
             </div>
-        </div>
+        
     </x-slot>
 
     <div class="p-6">

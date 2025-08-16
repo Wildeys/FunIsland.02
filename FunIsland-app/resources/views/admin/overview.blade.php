@@ -87,7 +87,7 @@
                 </div>
                 <div class="bg-purple-700 px-5 py-3">
                     <div class="text-sm">
-                        <a href="{{ route('hotels.index') }}" class="font-medium text-purple-200 hover:text-white">
+                        <a href="{{ route('hotels.management.index') }}" class="font-medium text-purple-200 hover:text-white">
                             Manage hotels
                         </a>
                     </div>

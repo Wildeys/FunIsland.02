@@ -55,8 +55,8 @@
                                     </svg>
                                     Hotel Dashboard
                                 </a>
-                                <a href="{{ route('hotels.index') }}" 
-                                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('hotels.index') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <a href="{{ route('hotels.management.index') }}" 
+                                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('hotels.management.index') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                                     <svg class="mr-3 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                                     </svg>
@@ -78,8 +78,8 @@
                                     </svg>
                                     Ferry Dashboard
                                 </a>
-                                <a href="{{ route('ferries.index') }}" 
-                                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('ferries.index') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <a href="{{ route('ferries.management.index') }}" 
+                                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('ferries.management.index') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                                     <svg class="mr-3 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
                                     </svg>
@@ -101,8 +101,8 @@
                                     </svg>
                                     Park Dashboard
                                 </a>
-                                <a href="{{ route('themeparks.index') }}" 
-                                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('themeparks.index') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                <a href="{{ route('themeparks.management.index') }}" 
+                                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('themeparks.management.index') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                                     <svg class="mr-3 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                                     </svg>
@@ -171,24 +171,16 @@
             <!-- Main Content -->
             <div class="lg:pl-64">
                 <!-- Top Header -->
-                <header class="bg-white shadow-sm border-b border-gray-200">
+                <header class="bg-white shadow-sm border-b border-gray-200 f">
                     <div class="px-4 sm:px-6 lg:px-8">
-                        <div class="flex justify-between h-16">
-                            <div class="flex items-center">
+                        <div class="flex justify-between h-16 items-center">
+                           
                                 @isset($header)
                                     {{ $header }}
                                 @else
                                     <h1 class="text-lg font-semibold text-gray-900">{{ $title ?? 'Management Dashboard' }}</h1>
                                 @endisset
-                            </div>
-                            <div class="flex items-center space-x-4">
-                                <!-- Notifications -->
-                                <button class="text-gray-400 hover:text-gray-500">
-                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM19 3a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14z"></path>
-                                    </svg>
-                                </button>
-                            </div>
+                            
                         </div>
                     </div>
                 </header>

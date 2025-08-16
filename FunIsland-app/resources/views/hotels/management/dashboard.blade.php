@@ -98,7 +98,7 @@
             </div>
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <a href="{{ route('hotels.create') }}" 
+                    <a href="{{ route('hotels.management.create') }}" 
                        class="flex items-center p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
                         <div class="flex-shrink-0">
                             <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
@@ -113,7 +113,7 @@
                         </div>
                     </a>
 
-                    <a href="{{ route('hotels.index') }}" 
+                    <a href="{{ route('hotels.management.index') }}" 
                        class="flex items-center p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
                         <div class="flex-shrink-0">
                             <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">

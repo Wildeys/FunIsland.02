@@ -44,7 +44,12 @@ class ThemeparkController extends Controller
      */
     public function create()
     {
-        return view('themeparks.create');
+        if (!auth()->user()->canManageThemeParks()) {
+            abort(403, 'Unauthorized');
+        }
+        
+        $locations = \App\Models\Location::all();
+        return view('themeparks.management.create', compact('locations'));
     }
 
     /**
@@ -53,7 +58,7 @@ class ThemeparkController extends Controller
     public function store(Request $request)
     {
         $themepark = themepark::create($request->all());
-        return redirect()->route('themeparks.index');
+        return redirect()->route('themeparks.management.index');
     }
 
     /**
@@ -61,7 +66,11 @@ class ThemeparkController extends Controller
      */
     public function show(themepark $themepark)
     {
-        return view('themeparks.show', compact('themepark'));
+        if (auth()->user()->hasRole('customer')) {
+            return view('themeparks.customer.show', compact('themepark'));
+        }
+        
+        return view('themeparks.management.show', compact('themepark'));
     }
 
     /**
@@ -69,7 +78,12 @@ class ThemeparkController extends Controller
      */
     public function edit(themepark $themepark)
     {
-        return view('themeparks.edit', compact('themepark'));
+        if (!auth()->user()->canManageThemeParks()) {
+            abort(403, 'Unauthorized');
+        }
+        
+        $locations = \App\Models\Location::all();
+        return view('themeparks.management.edit', compact('themepark', 'locations'));
     }
 
     /**
@@ -78,7 +92,7 @@ class ThemeparkController extends Controller
     public function update(Request $request, themepark $themepark)
     {
         $themepark->update($request->all());
-        return redirect()->route('themeparks.index');
+        return redirect()->route('themeparks.management.index');
     }
 
     /**
@@ -87,6 +101,32 @@ class ThemeparkController extends Controller
     public function destroy(themepark $themepark)
     {
         $themepark->delete();
-        return redirect()->route('themeparks.index');
+        return redirect()->route('themeparks.management.index');
+    }
+
+    /**
+     * Display the theme park management dashboard.
+     */
+    public function dashboard()
+    {
+        if (!auth()->user()->canManageThemeParks()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $totalParks = themepark::count();
+        $activeParks = themepark::where('status', 'active')->count();
+        $featuredParks = themepark::where('featured', true)->count();
+        $totalBookings = 0; // TODO: Add when booking model is ready
+        $recentBookings = []; // TODO: Add when booking model is ready
+        
+        $stats = [
+            'total_parks' => $totalParks,
+            'active_parks' => $activeParks,
+            'featured_parks' => $featuredParks,
+            'total_bookings' => $totalBookings,
+            'recent_bookings' => $recentBookings,
+        ];
+        
+        return view('themeparks.management.dashboard', compact('stats'));
     }
 }

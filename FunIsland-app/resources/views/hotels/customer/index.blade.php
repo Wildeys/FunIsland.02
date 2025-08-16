@@ -11,7 +11,7 @@
         <div class="bg-white rounded-2xl shadow-xl p-6 mb-12 -mt-20 relative z-10">
             <h2 class="text-2xl font-bold text-gray-900 mb-6 text-center">Find Your Perfect Stay</h2>
             
-            <form method="GET" action="{{ route('hotels.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <form method="GET" action="{{ route('hotels.customer.index') }}" class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <!-- Check-in Date -->
                 <div>
                     <label for="check_in" class="block text-sm font-medium text-gray-700 mb-2">Check-in</label>
@@ -61,19 +61,19 @@
             <div class="flex items-center space-x-4 mb-4 lg:mb-0">
                 <span class="text-lg font-semibold text-gray-700">Filter by:</span>
                 <div class="flex flex-wrap gap-2">
-                    <a href="{{ route('hotels.index', array_merge(request()->all(), ['rating' => '5'])) }}" 
+                    <a href="{{ route('hotels.customer.index', array_merge(request()->all(), ['rating' => '5'])) }}" 
                        class="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium {{ request('rating') == '5' ? 'bg-blue-50 border-blue-300 text-blue-700' : 'text-gray-700 hover:bg-gray-50' }} transition-colors">
                         ⭐ 5 Stars
                     </a>
-                    <a href="{{ route('hotels.index', array_merge(request()->all(), ['rating' => '4'])) }}" 
+                    <a href="{{ route('hotels.customer.index', array_merge(request()->all(), ['rating' => '4'])) }}" 
                        class="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium {{ request('rating') == '4' ? 'bg-blue-50 border-blue-300 text-blue-700' : 'text-gray-700 hover:bg-gray-50' }} transition-colors">
                         ⭐ 4+ Stars
                     </a>
-                    <a href="{{ route('hotels.index', array_merge(request()->all(), ['type' => 'luxury'])) }}" 
+                    <a href="{{ route('hotels.customer.index', array_merge(request()->all(), ['type' => 'luxury'])) }}" 
                        class="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium {{ request('type') == 'luxury' ? 'bg-blue-50 border-blue-300 text-blue-700' : 'text-gray-700 hover:bg-gray-50' }} transition-colors">
                         💎 Luxury
                     </a>
-                    <a href="{{ route('hotels.index', array_merge(request()->all(), ['amenity' => 'beach'])) }}" 
+                    <a href="{{ route('hotels.customer.index', array_merge(request()->all(), ['amenity' => 'beach'])) }}" 
                        class="px-4 py-2 bg-white border border-gray-300 rounded-full text-sm font-medium {{ request('amenity') == 'beach' ? 'bg-blue-50 border-blue-300 text-blue-700' : 'text-gray-700 hover:bg-gray-50' }} transition-colors">
                         🏖️ Beachfront
                     </a>
@@ -84,13 +84,13 @@
                 <span class="text-sm text-gray-600">{{ $hotels->total() }} hotels found</span>
                 <select onchange="location.href=this.value" 
                         class="border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500">
-                    <option value="{{ route('hotels.index', array_merge(request()->all(), ['sort' => 'name'])) }}" {{ request('sort') == 'name' ? 'selected' : '' }}>
+                    <option value="{{ route('hotels.customer.index', array_merge(request()->all(), ['sort' => 'name'])) }}" {{ request('sort') == 'name' ? 'selected' : '' }}>
                         Sort by Name
                     </option>
-                    <option value="{{ route('hotels.index', array_merge(request()->all(), ['sort' => 'rating'])) }}" {{ request('sort') == 'rating' ? 'selected' : '' }}>
+                    <option value="{{ route('hotels.customer.index', array_merge(request()->all(), ['sort' => 'rating'])) }}" {{ request('sort') == 'rating' ? 'selected' : '' }}>
                         Sort by Rating
                     </option>
-                    <option value="{{ route('hotels.index', array_merge(request()->all(), ['sort' => 'price'])) }}" {{ request('sort') == 'price' ? 'selected' : '' }}>
+                    <option value="{{ route('hotels.customer.index', array_merge(request()->all(), ['sort' => 'price'])) }}" {{ request('sort') == 'price' ? 'selected' : '' }}>
                         Sort by Price
                     </option>
                 </select>
@@ -123,7 +123,7 @@
                         It looks like there are no hotels available right now. Please check back later!
                     @endif
                 </p>
-                <a href="{{ route('hotels.index') }}" 
+                <a href="{{ route('hotels.customer.index') }}" 
                    class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all transform hover:scale-105">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
