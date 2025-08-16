@@ -65,18 +65,39 @@ Route::middleware('auth')->group(function () {
     // Hotel Manager Routes
     Route::middleware(['auth', 'role:hotel_manager,administrator'])->group(function () {
         Route::get('/hotels/dashboard', [HotelController::class, 'dashboard'])->name('hotels.dashboard');
+        Route::get('/hotels/index', [HotelController::class, 'index'])->name('hotels.index');
+        Route::get('/hotels/create', [HotelController::class, 'create'])->name('hotels.create');
+        Route::post('/hotels', [HotelController::class, 'store'])->name('hotels.store');
+        Route::get('/hotels/{hotel}', [HotelController::class, 'show'])->name('hotels.show');
+        Route::get('/hotels/{hotel}/edit', [HotelController::class, 'edit'])->name('hotels.edit');
+        Route::put('/hotels/{hotel}', [HotelController::class, 'update'])->name('hotels.update');
+        Route::delete('/hotels/{hotel}', [HotelController::class, 'destroy'])->name('hotels.destroy');
         Route::resource('hotels', HotelController::class);
     });
 
     // Ferry Operator Routes
     Route::middleware(['auth', 'role:ferry_operator,administrator'])->group(function () {
         Route::get('/ferries/dashboard', [FerryController::class, 'dashboard'])->name('ferries.dashboard');
+        Route::get('/ferries/index', [FerryController::class, 'index'])->name('ferries.index');
+        Route::get('/ferries/create', [FerryController::class, 'create'])->name('ferries.create');
+        Route::post('/ferries', [FerryController::class, 'store'])->name('ferries.store');
+        Route::get('/ferries/{ferry}', [FerryController::class, 'show'])->name('ferries.show');
+        Route::get('/ferries/{ferry}/edit', [FerryController::class, 'edit'])->name('ferries.edit');
+        Route::put('/ferries/{ferry}', [FerryController::class, 'update'])->name('ferries.update');
+        Route::delete('/ferries/{ferry}', [FerryController::class, 'destroy'])->name('ferries.destroy');
         Route::resource('ferries', FerryController::class);
     });
 
     // Theme Park Manager Routes
     Route::middleware(['auth', 'role:theme_park_manager,administrator'])->group(function () {
         Route::get('/themeparks/dashboard', [ThemeparkController::class, 'dashboard'])->name('themeparks.dashboard');
+        Route::get('/themeparks/index', [ThemeparkController::class, 'index'])->name('themeparks.index');
+        Route::get('/themeparks/create', [ThemeparkController::class, 'create'])->name('themeparks.create');
+        Route::post('/themeparks', [ThemeparkController::class, 'store'])->name('themeparks.store');
+        Route::get('/themeparks/{themepark}', [ThemeparkController::class, 'show'])->name('themeparks.show');
+        Route::get('/themeparks/{themepark}/edit', [ThemeparkController::class, 'edit'])->name('themeparks.edit');
+        Route::put('/themeparks/{themepark}', [ThemeparkController::class, 'update'])->name('themeparks.update');
+        Route::delete('/themeparks/{themepark}', [ThemeparkController::class, 'destroy'])->name('themeparks.destroy');
         Route::resource('themeparks', ThemeparkController::class);
     });
 
@@ -125,6 +146,8 @@ Route::middleware('auth')->group(function () {
         // System statistics and reports
         Route::get('/admin/reports', [AdminController::class, 'reports'])->name('admin.reports');
         Route::get('/admin/analytics', [AdminController::class, 'analytics'])->name('admin.analytics');
+
+
     });
 
     // Staff and Management shared routes (multiple roles can access)

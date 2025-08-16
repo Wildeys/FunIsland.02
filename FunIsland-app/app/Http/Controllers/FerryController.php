@@ -24,15 +24,26 @@ class FerryController extends Controller
     /**
      * Public browsing without authentication
      */
-    public function browse()
+        public function browse()
     {
-        $ferries = ferry::where('status', 'active')
-            ->with(['departureLocation', 'arrivalLocation'])
-            ->orderBy('departure_time')
+        // Get ferries with active schedules
+        $ferries = ferry::whereHas('schedules', function($query) {
+                $query->where('is_available', true)
+                      ->where('date', '>=', now()->format('Y-m-d'));
+            })
+            ->with(['schedules' => function($query) {
+                $query->where('is_available', true)
+                      ->where('date', '>=', now()->format('Y-m-d'))
+                      ->orderBy('date')
+                      ->orderBy('departure_time');
+            }])
             ->paginate(12);
         
-        $featuredRoutes = ferry::where('status', 'active')
-            ->where('featured', true)
+        // Get featured ferries (first 3 ferries with schedules)
+        $featuredRoutes = ferry::whereHas('schedules', function($query) {
+                $query->where('is_available', true)
+                      ->where('date', '>=', now()->format('Y-m-d'));
+            })
             ->limit(3)
             ->get();
         
@@ -88,5 +99,34 @@ class FerryController extends Controller
     {
         $ferry->delete();
         return redirect()->route('ferries.index');
+    }
+
+    /**
+     * Ferry management dashboard
+     */
+    public function dashboard()
+    {
+        if (!auth()->user()->canManageFerries()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $totalFerries = ferry::count();
+        $totalSchedules = \DB::table('ferry_schedule')->count();
+        $activeRoutes = ferry::whereHas('schedules', function($query) {
+                $query->where('is_available', true)
+                      ->where('date', '>=', now()->format('Y-m-d'));
+            })->count();
+        $totalBookings = 0; // TODO: Add when booking model is ready
+        $recentBookings = []; // TODO: Add when booking model is ready
+        
+        $stats = [
+            'total_ferries' => $totalFerries,
+            'total_schedules' => $totalSchedules,
+            'active_routes' => $activeRoutes,
+            'total_bookings' => $totalBookings,
+            'recent_bookings' => $recentBookings,
+        ];
+        
+        return view('ferries.management.dashboard', compact('stats'));
     }
 }
