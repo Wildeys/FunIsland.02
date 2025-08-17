@@ -84,6 +84,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/ferries/management/{ferry}/edit', [FerryController::class, 'edit'])->name('ferries.management.edit');
         Route::put('/ferries/management/{ferry}', [FerryController::class, 'update'])->name('ferries.update');
         Route::delete('/ferries/management/{ferry}', [FerryController::class, 'destroy'])->name('ferries.destroy');
+        Route::get('/ferries/schedules', [FerryController::class, 'allSchedules'])->name('ferries.all-schedules');
         Route::get('/ferries/management/{ferry}/schedules', [FerryController::class, 'schedules'])->name('ferries.schedules');
         Route::post('/ferries/management/{ferry}/schedules', [FerryController::class, 'storeSchedule'])->name('ferries.schedules.store');
         Route::delete('/ferries/management/{ferry}/schedules/{schedule}', [FerryController::class, 'destroySchedule'])->name('ferries.schedules.destroy');

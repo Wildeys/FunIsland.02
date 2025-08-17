@@ -27,7 +27,7 @@
                 @csrf
                 <div class="bg-white shadow rounded-lg p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Add New Schedule</h3>
-                    <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
+                    <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-x-6">
                         <!-- Date -->
                         <div>
                             <label for="date" class="block text-sm font-medium text-gray-700">Date</label>
@@ -44,6 +44,24 @@
                                    required>
                         </div>
 
+                        <!-- Departure Location -->
+                        <div>
+                            <label for="departure_location" class="block text-sm font-medium text-gray-700">Departure Location</label>
+                            <input type="text" name="departure_location" id="departure_location" value="{{ old('departure_location') }}"
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                   placeholder="e.g., Presidential Jetty"
+                                   required>
+                        </div>
+
+                        <!-- Arrival Location -->
+                        <div>
+                            <label for="arrival_location" class="block text-sm font-medium text-gray-700">Arrival Location</label>
+                            <input type="text" name="arrival_location" id="arrival_location" value="{{ old('arrival_location') }}"
+                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                   placeholder="e.g., Maafushi"
+                                   required>
+                        </div>
+
                         <!-- Remaining Seats -->
                         <div>
                             <label for="remaining_seats" class="block text-sm font-medium text-gray-700">Remaining Seats</label>
@@ -55,7 +73,7 @@
                         <!-- Price -->
                         <div>
                             <label for="price" class="block text-sm font-medium text-gray-700">Price ($)</label>
-                            <input type="number" name="price" id="price" value="{{ old('price', $ferry->price) }}"
+                            <input type="number" name="price" id="price" value="{{ old('price') }}"
                                    step="0.01" min="0"
                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                                    required>
@@ -90,6 +108,7 @@
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departure Time</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Route</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remaining Seats</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Availability</th>
@@ -101,6 +120,9 @@
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $schedule->date }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $schedule->departure_time }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                        {{ $schedule->departure_location }} → {{ $schedule->arrival_location }}
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $schedule->remaining_seats }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ number_format($schedule->price, 2) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -119,7 +141,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                                    <td colspan="7" class="px-6 py-12 text-center text-gray-500">
                                         No schedules found.
                                     </td>
                                 </tr>

@@ -159,7 +159,7 @@
                             </div>
                         </a>
 
-                        <a href="#" 
+                        <a href="{{ route('ferries.all-schedules') }}" 
                            class="flex items-center p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors">
                             <div class="flex-shrink-0">
                                 <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">

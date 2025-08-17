@@ -13,16 +13,11 @@ class ferry extends Model
         'location_id',
         'name',
         'capacity',
-        'price',
-        'departure_location',
-        'arrival_location',
-        'status',
-        'description'
+        'status'
     ];
 
     protected $casts = [
-        'capacity' => 'integer',
-        'price' => 'decimal:2'
+        'capacity' => 'integer'
     ];
 
     protected $attributes = [
