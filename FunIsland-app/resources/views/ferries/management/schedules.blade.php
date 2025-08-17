@@ -46,20 +46,32 @@
 
                         <!-- Departure Location -->
                         <div>
-                            <label for="departure_location" class="block text-sm font-medium text-gray-700">Departure Location</label>
-                            <input type="text" name="departure_location" id="departure_location" value="{{ old('departure_location') }}"
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                                   placeholder="e.g., Presidential Jetty"
-                                   required>
+                            <label for="departure_location_id" class="block text-sm font-medium text-gray-700">Departure Location</label>
+                            <select name="departure_location_id" id="departure_location_id"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                    required>
+                                <option value="">Select departure location</option>
+                                @foreach($locations as $location)
+                                    <option value="{{ $location->id }}" {{ old('departure_location_id') == $location->id ? 'selected' : '' }}>
+                                        {{ $location->location_name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <!-- Arrival Location -->
                         <div>
-                            <label for="arrival_location" class="block text-sm font-medium text-gray-700">Arrival Location</label>
-                            <input type="text" name="arrival_location" id="arrival_location" value="{{ old('arrival_location') }}"
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                                   placeholder="e.g., Maafushi"
-                                   required>
+                            <label for="arrival_location_id" class="block text-sm font-medium text-gray-700">Arrival Location</label>
+                            <select name="arrival_location_id" id="arrival_location_id"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                                    required>
+                                <option value="">Select arrival location</option>
+                                @foreach($locations as $location)
+                                    <option value="{{ $location->id }}" {{ old('arrival_location_id') == $location->id ? 'selected' : '' }}>
+                                        {{ $location->location_name }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <!-- Remaining Seats -->
@@ -100,6 +112,50 @@
                 </div>
             </form>
 
+            <script>
+                // Prevent selecting the same location for departure and arrival
+                document.addEventListener('DOMContentLoaded', function() {
+                    const departureSelect = document.getElementById('departure_location_id');
+                    const arrivalSelect = document.getElementById('arrival_location_id');
+                    
+                    function updateAvailableOptions() {
+                        const departureValue = departureSelect.value;
+                        const arrivalValue = arrivalSelect.value;
+                        
+                        // Reset all options to enabled
+                        Array.from(arrivalSelect.options).forEach(option => {
+                            option.disabled = false;
+                        });
+                        Array.from(departureSelect.options).forEach(option => {
+                            option.disabled = false;
+                        });
+                        
+                        // Disable selected option in the other select
+                        if (departureValue) {
+                            Array.from(arrivalSelect.options).forEach(option => {
+                                if (option.value === departureValue) {
+                                    option.disabled = true;
+                                }
+                            });
+                        }
+                        
+                        if (arrivalValue) {
+                            Array.from(departureSelect.options).forEach(option => {
+                                if (option.value === arrivalValue) {
+                                    option.disabled = true;
+                                }
+                            });
+                        }
+                    }
+                    
+                    departureSelect.addEventListener('change', updateAvailableOptions);
+                    arrivalSelect.addEventListener('change', updateAvailableOptions);
+                    
+                    // Initial call
+                    updateAvailableOptions();
+                });
+            </script>
+
             <div class="mt-8 bg-white shadow rounded-lg p-6">
                 <h3 class="text-lg font-medium text-gray-900 mb-4">Existing Schedules</h3>
                 <div class="overflow-x-auto">
@@ -121,7 +177,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $schedule->date }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $schedule->departure_time }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {{ $schedule->departure_location }} → {{ $schedule->arrival_location }}
+                                        {{ $schedule->departureLocation->location_name }} → {{ $schedule->arrivalLocation->location_name }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $schedule->remaining_seats }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${{ number_format($schedule->price, 2) }}</td>

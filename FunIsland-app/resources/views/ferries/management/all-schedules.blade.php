@@ -150,8 +150,8 @@
                                     <div class="text-sm text-gray-900">{{ \Carbon\Carbon::parse($schedule->departure_time)->format('H:i') }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900">{{ $schedule->departure_location }}</div>
-                                    <div class="text-sm text-gray-500">→ {{ $schedule->arrival_location }}</div>
+                                    <div class="text-sm text-gray-900">{{ $schedule->departureLocation->location_name }}</div>
+                                    <div class="text-sm text-gray-500">→ {{ $schedule->arrivalLocation->location_name }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm text-gray-900">${{ number_format($schedule->price, 2) }}</div>
@@ -247,7 +247,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                                 </svg>
-                                                {{ $schedule->departure_location }} → {{ $schedule->arrival_location }}
+                                                {{ $schedule->departureLocation->location_name }} → {{ $schedule->arrivalLocation->location_name }}
                                             </div>
                                             
                                             <div class="flex items-center">

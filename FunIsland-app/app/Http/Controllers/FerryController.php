@@ -118,7 +118,8 @@ class FerryController extends Controller
     public function show(Ferry $ferry)
     {
         $ferry->load(['location', 'schedules' => function($query) {
-            $query->where('date', '>=', now()->format('Y-m-d'))
+            $query->with(['departureLocation', 'arrivalLocation'])
+                  ->where('date', '>=', now()->format('Y-m-d'))
                   ->orderBy('date')
                   ->orderBy('departure_time');
         }]);
@@ -219,10 +220,13 @@ class FerryController extends Controller
         }
 
         $ferry->load(['schedules' => function($query) {
-            $query->orderBy('date')->orderBy('departure_time');
+            $query->with(['departureLocation', 'arrivalLocation'])
+                  ->orderBy('date')->orderBy('departure_time');
         }]);
         
-        return view('ferries.management.schedules', compact('ferry'));
+        $locations = Location::all();
+        
+        return view('ferries.management.schedules', compact('ferry', 'locations'));
     }
 
     /**
@@ -237,8 +241,8 @@ class FerryController extends Controller
         $validated = $request->validate([
             'date' => 'required|date|after_or_equal:today',
             'departure_time' => 'required|date_format:H:i',
-            'departure_location' => 'required|string|max:255',
-            'arrival_location' => 'required|string|max:255',
+            'departure_location_id' => 'required|exists:locations,id',
+            'arrival_location_id' => 'required|exists:locations,id|different:departure_location_id',
             'remaining_seats' => 'required|integer|min:0|max:' . $ferry->capacity,
             'price' => 'required|numeric|min:0',
             'is_available' => 'required|boolean',
@@ -248,8 +252,8 @@ class FerryController extends Controller
             'ferry_id' => $ferry->id,
             'date' => $validated['date'],
             'departure_time' => $validated['departure_time'],
-            'departure_location' => $validated['departure_location'],
-            'arrival_location' => $validated['arrival_location'],
+            'departure_location_id' => $validated['departure_location_id'],
+            'arrival_location_id' => $validated['arrival_location_id'],
             'price' => $validated['price'],
             'remaining_seats' => $validated['remaining_seats'],
             'is_available' => $validated['is_available'],
@@ -284,13 +288,13 @@ class FerryController extends Controller
         }
 
         // Get today's schedules
-        $todaySchedules = FerrySchedule::with(['ferry'])
+        $todaySchedules = FerrySchedule::with(['ferry', 'departureLocation', 'arrivalLocation'])
             ->where('date', now()->toDateString())
             ->orderBy('departure_time')
             ->get();
 
         // Get upcoming schedules (next 7 days)
-        $upcomingSchedules = FerrySchedule::with(['ferry'])
+        $upcomingSchedules = FerrySchedule::with(['ferry', 'departureLocation', 'arrivalLocation'])
             ->where('date', '>', now()->toDateString())
             ->where('date', '<=', now()->addDays(7)->toDateString())
             ->orderBy('date')
@@ -298,7 +302,7 @@ class FerryController extends Controller
             ->get();
 
         // Get all future schedules grouped by date
-        $allFutureSchedules = FerrySchedule::with(['ferry'])
+        $allFutureSchedules = FerrySchedule::with(['ferry', 'departureLocation', 'arrivalLocation'])
             ->where('date', '>=', now()->toDateString())
             ->orderBy('date')
             ->orderBy('departure_time')
@@ -313,5 +317,41 @@ class FerryController extends Controller
         ];
 
         return view('ferries.management.all-schedules', compact('todaySchedules', 'upcomingSchedules', 'allFutureSchedules', 'stats'));
+    }
+
+    /**
+     * Handle ferry booking requests
+     */
+    public function book(Request $request)
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please login to book ferry tickets.');
+        }
+
+        $validated = $request->validate([
+            'ferry_id' => 'required|exists:ferries,id',
+            'schedule_id' => 'nullable|exists:ferry_schedule,id',
+            'passengers' => 'required|integer|min:1|max:10'
+        ]);
+
+        $ferry = Ferry::findOrFail($validated['ferry_id']);
+
+        // If schedule_id is provided, redirect to specific schedule booking
+        if (isset($validated['schedule_id'])) {
+            $schedule = FerrySchedule::findOrFail($validated['schedule_id']);
+            
+            // Check availability
+            if (!$schedule->is_available || $schedule->remaining_seats < $validated['passengers']) {
+                return back()->with('error', 'Sorry, this schedule is not available or doesn\'t have enough seats.');
+            }
+
+            // For now, create a simple booking redirect - this can be enhanced later
+            return redirect()->route('ferries.show', $ferry->id)
+                ->with('success', 'Schedule selected! Contact customer service to complete your booking.');
+        }
+
+        // If no specific schedule, redirect to ferry details to choose schedule
+        return redirect()->route('ferries.show', $ferry->id)
+            ->with('info', 'Please select a specific departure time to complete your booking.');
     }
 }
