@@ -14,10 +14,15 @@ class themepark extends Model
         'location_id',
         'name',
         'description',
+        'admission_price',
+        'capacity',
         'rating',
+        'opening_time',
+        'closing_time',
         'status',
         'featured',
         'image_url',
+        'features',
     ];
 
     protected $casts = [
