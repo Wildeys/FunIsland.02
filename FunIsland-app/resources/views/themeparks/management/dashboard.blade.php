@@ -5,7 +5,7 @@
                 <p class="text-sm text-gray-600">Manage theme parks, activities, and attractions</p>
             </div>
             <div class="flex items-center space-x-3">
-                <a href="{{ route('themeparks.management.create') }}" 
+                <a href="{{ route('management.themeparks.create') }}" 
                    class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
                     Add New Theme Park
                 </a>
@@ -121,7 +121,7 @@
             </div>
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <a href="{{ route('themeparks.management.create') }}" 
+                    <a href="{{ route('management.themeparks.create') }}" 
                        class="flex items-center p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors">
                         <div class="flex-shrink-0">
                             <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">

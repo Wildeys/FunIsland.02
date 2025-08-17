@@ -35,7 +35,7 @@ class room extends Model
 
     public function bookings(): HasMany
     {
-        return $this->hasMany(Booking::class);
+        return $this->hasMany(Booking::class, 'hotel_room_id');
     }
 
     // Scopes

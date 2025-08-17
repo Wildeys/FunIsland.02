@@ -15,7 +15,7 @@ class HotelController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except(['browse']);
-        $this->middleware('role:hotel_manager,administrator')->except(['index', 'show', 'browse']);
+        $this->middleware('role:hotel_manager,administrator')->except(['index', 'show', 'browse', 'book']);
     }
 
     /**
@@ -201,7 +201,7 @@ class HotelController extends Controller
     {
         $validated = $request->validate([
             'hotel_id' => 'required|exists:hotels,id',
-            'room_id' => 'required|exists:rooms,id',
+            'room_id' => 'required|exists:hotel_rooms,id',
             'check_in_date' => 'required|date|after_or_equal:today',
             'check_out_date' => 'required|date|after:check_in_date',
             'guests' => 'required|integer|min:1|max:10',
@@ -232,7 +232,7 @@ class HotelController extends Controller
             'user_id' => auth()->id(),
             'booking_type' => 'hotel',
             'hotel_id' => $validated['hotel_id'],
-            'room_id' => $validated['room_id'],
+            'hotel_room_id' => $validated['room_id'],
             'check_in_date' => $validated['check_in_date'],
             'check_out_date' => $validated['check_out_date'],
             'guests' => $validated['guests'],
@@ -242,7 +242,7 @@ class HotelController extends Controller
             'payment_status' => 'pending',
         ]);
 
-        return redirect()->route('bookings.show', $booking)
+        return redirect()->route('bookings.my')
             ->with('success', 'Your booking has been created successfully! Booking reference: ' . $booking->booking_reference);
     }
 

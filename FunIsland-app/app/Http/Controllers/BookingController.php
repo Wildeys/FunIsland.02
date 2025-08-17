@@ -38,12 +38,12 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        // Ensure the user can only view their own booking
-        if ($booking->user_id !== auth()->id() && !auth()->user()->isAdmin()) {
+        // Ensure the user can only view their own booking or is authorized management
+        if ($booking->user_id !== auth()->id() && !auth()->user()->canManageTicketing() && !auth()->user()->isAdministrator()) {
             abort(403, 'Unauthorized access to booking details.');
         }
 
-        $booking->load(['hotel', 'room', 'ferry', 'event']);
+        $booking->load(['user', 'hotel', 'room', 'ferry', 'event']);
         return view('bookings.show', compact('booking'));
     }
 

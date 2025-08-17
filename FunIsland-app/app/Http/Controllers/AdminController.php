@@ -20,6 +20,14 @@ class AdminController extends Controller
     }
 
     /**
+     * Admin dashboard - redirects to overview
+     */
+    public function dashboard()
+    {
+        return $this->overview();
+    }
+
+    /**
      * System overview dashboard
      */
     public function overview()

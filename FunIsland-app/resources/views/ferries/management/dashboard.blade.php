@@ -5,7 +5,7 @@
                 <p class="text-sm text-gray-600">Manage ferry operations and schedules</p>
             </div>
             <div class="flex items-center space-x-3">
-                <a href="{{ route('ferries.management.create') }}" 
+                <a href="{{ route('management.ferries.create') }}" 
                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
                     Add New Ferry
                 </a>
@@ -129,7 +129,7 @@
                 </div>
                 <div class="p-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <a href="{{ route('ferries.management.create') }}" 
+                        <a href="{{ route('management.ferries.create') }}" 
                            class="flex items-center p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
                             <div class="flex-shrink-0">
                                 <div class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
