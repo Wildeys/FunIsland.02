@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ferry;
+use App\Models\ferry;
 use App\Models\Location;
 use App\Models\FerrySchedule;
 use Illuminate\Http\Request;

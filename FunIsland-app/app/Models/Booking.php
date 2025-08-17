@@ -13,7 +13,7 @@ class Booking extends Model
         'user_id',
         'booking_type',
         'hotel_id',
-        'room_id',
+        'hotel_room_id',
         'ferry_id',
         'event_id',
         'check_in_date',
@@ -60,7 +60,7 @@ class Booking extends Model
 
     public function room(): BelongsTo
     {
-        return $this->belongsTo(Room::class);
+        return $this->belongsTo(Room::class, 'hotel_room_id');
     }
 
     public function ferry(): BelongsTo
