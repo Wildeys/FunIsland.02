@@ -1,7 +1,7 @@
 <x-management-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('My Bookings') }}
+            {{ __('Manage Booking List') }}
         </h2>
     </x-slot>
 

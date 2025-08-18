@@ -58,8 +58,23 @@ class BookingController extends Controller
      */
     public function show(Booking $booking)
     {
-        // Ensure the user can only view their own booking or is authorized management
-        if ($booking->user_id !== auth()->id() && !auth()->user()->canManageTicketing() && !auth()->user()->isAdministrator()) {
+        $user = auth()->user();
+        
+        // Allow access if:
+        // 1. User owns the booking
+        // 2. User is an administrator (can see all bookings)
+        // 3. User can manage ticketing and can see all bookings
+        // 4. User is hotel manager and this is a hotel booking
+        // 5. User is ferry operator and this is a ferry booking  
+        // 6. User is theme park manager and this is a theme park booking
+        $canAccess = $booking->user_id === auth()->id() ||
+                    $user->isAdministrator() ||
+                    $user->canManageTicketing() ||
+                    ($user->canManageHotels() && $booking->booking_type === 'hotel') ||
+                    ($user->canManageFerries() && $booking->booking_type === 'ferry') ||
+                    ($user->canManageThemeParks() && $booking->booking_type === 'themepark');
+
+        if (!$canAccess) {
             abort(403, 'Unauthorized access to booking details.');
         }
 
@@ -162,13 +177,26 @@ class BookingController extends Controller
      */
     public function updateStatus(Request $request, Booking $booking)
     {
+        $user = auth()->user();
+        
+        // Check if user can update this booking status
+        $canUpdate = $user->isAdministrator() ||
+                    $user->canManageTicketing() ||
+                    ($user->canManageHotels() && $booking->booking_type === 'hotel') ||
+                    ($user->canManageFerries() && $booking->booking_type === 'ferry') ||
+                    ($user->canManageThemeParks() && $booking->booking_type === 'themepark');
+
+        if (!$canUpdate) {
+            abort(403, 'Unauthorized to update this booking status.');
+        }
+
         $request->validate([
             'status' => 'required|in:pending,confirmed,cancelled,completed'
         ]);
 
         $booking->update(['status' => $request->status]);
 
-        return redirect()->back()->with('success', 'Booking status updated successfully.');
+        return redirect()->back()->with('success', 'Booking status updated to ' . ucfirst($request->status) . ' successfully.');
     }
 
     /**

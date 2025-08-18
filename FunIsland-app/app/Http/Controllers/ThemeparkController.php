@@ -185,6 +185,11 @@ class ThemeparkController extends Controller
             return redirect()->route('login')->with('error', 'Please login to book theme park tickets.');
         }
 
+        // Check if user has an active hotel booking first
+        if (!auth()->user()->hasActiveHotelBooking()) {
+            return back()->with('error', 'You must have an active hotel booking before you can book theme park tickets. Please book accommodation first.');
+        }
+
         $validated = $request->validate([
             'themepark_id' => 'required|exists:themeparks,id',
             'tickets' => 'required|integer|min:1|max:10',
