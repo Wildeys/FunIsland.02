@@ -14,8 +14,8 @@ class FerrySchedule extends Model
         'ferry_id',
         'date',
         'departure_time',
-        'departure_location',
-        'arrival_location',
+        'departure_location_id',
+        'arrival_location_id',
         'price',
         'remaining_seats',
         'is_available'
@@ -33,6 +33,16 @@ class FerrySchedule extends Model
     public function ferry(): BelongsTo
     {
         return $this->belongsTo(ferry::class);
+    }
+
+    public function departureLocation(): BelongsTo
+    {
+        return $this->belongsTo(Location::class, 'departure_location_id');
+    }
+
+    public function arrivalLocation(): BelongsTo
+    {
+        return $this->belongsTo(Location::class, 'arrival_location_id');
     }
 
     public function ticketing(): HasMany

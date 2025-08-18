@@ -57,28 +57,6 @@
                                    required min="1">
                         </div>
 
-                        <!-- Price -->
-                        <div>
-                            <label for="price" class="block text-sm font-medium text-gray-700">Price ($)</label>
-                            <input type="number" name="price" id="price" value="{{ old('price') }}"
-                                   step="0.01" min="0"
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                        </div>
-
-                        <!-- Departure Location -->
-                        <div>
-                            <label for="departure_location" class="block text-sm font-medium text-gray-700">Departure Location</label>
-                            <input type="text" name="departure_location" id="departure_location" value="{{ old('departure_location') }}"
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                        </div>
-
-                        <!-- Arrival Location -->
-                        <div>
-                            <label for="arrival_location" class="block text-sm font-medium text-gray-700">Arrival Location</label>
-                            <input type="text" name="arrival_location" id="arrival_location" value="{{ old('arrival_location') }}"
-                                   class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">
-                        </div>
-
                         <!-- Status -->
                         <div>
                             <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
@@ -91,11 +69,23 @@
                         </div>
                     </div>
 
-                    <!-- Description -->
-                    <div class="mt-6">
-                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                        <textarea name="description" id="description" rows="4"
-                                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">{{ old('description') }}</textarea>
+                    <!-- Note about schedules -->
+                    <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-md">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-blue-800">
+                                    About Ferry Routes & Schedules
+                                </h3>
+                                <div class="mt-2 text-sm text-blue-700">
+                                    <p>After creating the ferry, you can add specific routes, schedules, and pricing information from the ferry management page.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Submit Button -->
