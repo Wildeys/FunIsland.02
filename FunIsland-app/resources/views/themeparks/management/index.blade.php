@@ -1,4 +1,4 @@
-<x-tropical-layout>
+<x-management-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <h1 class="text-2xl font-bold text-white">🎢 Theme Park Management</h1>
@@ -275,4 +275,4 @@
         </div>
         @endif
     </div>
-</x-tropical-layout> 
+</x-management-layout> 

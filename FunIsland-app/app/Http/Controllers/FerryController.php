@@ -337,6 +337,13 @@ class FerryController extends Controller
             return redirect()->route('login')->with('error', 'Please login to book ferry tickets.');
         }
 
+        // Check if user has an active hotel booking first
+        $activeHotelBooking = auth()->user()->getActiveHotelBooking();
+        
+        if (!$activeHotelBooking) {
+            return back()->with('error', 'You must have an active hotel booking before you can book ferry tickets. Please book accommodation first.');
+        }
+
         $validated = $request->validate([
             'ferry_id' => 'required|exists:ferries,id',
             'schedule_id' => 'required|exists:ferry_schedule,id',
@@ -356,7 +363,7 @@ class FerryController extends Controller
 
             // Create ferry ticket request
             $ticket = FerryTicketing::create([
-                'hotel_booking_id' => $validated['hotel_booking_id'] ?? null,
+                'hotel_booking_id' => $validated['hotel_booking_id'] ?? $activeHotelBooking->id,
                 'ferry_schedule_id' => $schedule->id,
                 'user_id' => auth()->id(),
                 'date' => $schedule->date,

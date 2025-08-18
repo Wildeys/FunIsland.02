@@ -98,6 +98,36 @@ class User extends Authenticatable
                $this->hasRole('theme_park_manager');
     }
 
+    /**
+     * Relationship to bookings
+     */
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    /**
+     * Check if user has an active hotel booking
+     */
+    public function hasActiveHotelBooking(): bool
+    {
+        return $this->bookings()->where('booking_type', 'hotel')
+            ->whereIn('status', ['confirmed', 'pending'])
+            ->where('check_out_date', '>=', now()->format('Y-m-d'))
+            ->exists();
+    }
+
+    /**
+     * Get user's active hotel booking
+     */
+    public function getActiveHotelBooking()
+    {
+        return $this->bookings()->where('booking_type', 'hotel')
+            ->whereIn('status', ['confirmed', 'pending'])
+            ->where('check_out_date', '>=', now()->format('Y-m-d'))
+            ->first();
+    }
+
     public function canManageTicketing(): bool
     {
         return $this->hasRole('administrator') || 
@@ -126,10 +156,6 @@ class User extends Authenticatable
                $this->hasRole('hotel_manager');
     }
 
-    public function bookings(): HasMany
-    {
-        return $this->hasMany(Booking::class);
-    }
 
     public function eventBookings(): HasMany
     {
