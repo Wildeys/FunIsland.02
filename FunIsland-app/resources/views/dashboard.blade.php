@@ -125,7 +125,11 @@
         header('Location: ' . route('themeparks.dashboard'));
         exit();
     @endphp
-
+@elseif(auth()->user()->isHotelStaff()) 
+    @php
+        header('Location: ' . route('bookings.staff'));
+        exit();
+    @endphp
 @else
     <!-- Default Dashboard -->
     <x-app-layout>

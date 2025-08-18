@@ -62,6 +62,13 @@
                                     </svg>
                                     Manage Hotels
                                 </a>
+                                <a href="{{ route('bookings.index') }}" 
+                                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('manager.bookings.*') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                    <svg class="mr-3 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                    </svg>
+                                    Hotel Bookings
+                                </a>
                             </div>
                         </div>
                         @endif

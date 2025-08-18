@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex items-center justify-between">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900">Hotel Management</h1>
+            <h1 class="text-2xl font-bold text-gray-900">Hotel Management</h1>
                 <p class="text-sm text-gray-600">Manage hotels, rooms, and bookings</p>
             </div>
             <a href="{{ route('hotels.management.create') }}" 
@@ -130,7 +130,7 @@
                 <h3 class="text-lg font-medium text-gray-900">Hotels ({{ $hotels->total() }})</h3>
             </div>
             <div class="overflow-x-auto">
-                @if($hotels->count() > 0)
+        @if($hotels->count() > 0)
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
@@ -155,15 +155,15 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            @foreach($hotels as $hotel)
+            @foreach($hotels as $hotel)
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
                                             @if($hotel->image_url)
                                                 <div class="flex-shrink-0 h-10 w-10">
                                                     <img class="h-10 w-10 rounded-lg object-cover" src="{{ $hotel->image_url }}" alt="{{ $hotel->name }}">
-                                                </div>
-                                            @else
+        </div>
+        @else
                                                 <div class="flex-shrink-0 h-10 w-10 bg-gray-200 rounded-lg flex items-center justify-center">
                                                     <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
@@ -214,31 +214,31 @@
                         </tbody>
                     </table>
                 @else
-                    <div class="text-center py-12">
+            <div class="text-center py-12">
                         <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                        </svg>
-                        <h3 class="mt-2 text-sm font-medium text-gray-900">No hotels found</h3>
-                        <p class="mt-1 text-sm text-gray-500">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">No hotels found</h3>
+                <p class="mt-1 text-sm text-gray-500">
                             @if(request()->hasAny(['search', 'status', 'featured']))
                                 Try adjusting your search criteria or 
                                 <a href="{{ route('hotels.management.index') }}" class="text-indigo-600 hover:text-indigo-900">clear filters</a>.
-                            @else
-                                Get started by creating your first hotel.
-                            @endif
-                        </p>
+                    @else
+                        Get started by creating your first hotel.
+                    @endif
+                </p>
                         @if(!request()->hasAny(['search', 'status', 'featured']))
-                            <div class="mt-6">
+                <div class="mt-6">
                                 <a href="{{ route('hotels.management.create') }}" 
                                    class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                    </svg>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
                                     Add your first hotel
-                                </a>
+                    </a>
                             </div>
                         @endif
-                    </div>
+                </div>
                 @endif
             </div>
             

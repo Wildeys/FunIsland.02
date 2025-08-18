@@ -62,6 +62,16 @@ Route::middleware('auth')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 
+
+    // Booking Routes (Hotel Booking without Middleware, Others with Hotel Booking Check)
+        Route::post('/hotels/{hotel}/book', [BookingController::class, 'storeHotelBooking'])->name('bookings.hotel.store');
+        Route::middleware('has.hotel.booking')->group(function () {
+            Route::post('/ferries/{ferry}/book', [BookingController::class, 'storeFerryBooking'])->name('bookings.ferry.store');
+            Route::post('/themeparks/{themepark}/book', [BookingController::class, 'storeThemeparkBooking'])->name('bookings.themepark.store');
+            Route::post('/events/{event}/book', [EventController::class, 'book'])->name('events.book');
+            Route::get('/events/booking/{booking}/confirmation', [EventController::class, 'bookingConfirmation'])->name('events.booking.confirmation');
+        });
+
     // Hotel Manager Routes
     Route::middleware(['auth', 'role:hotel_manager,administrator'])->group(function () {
         Route::get('/hotels/dashboard', [HotelController::class, 'dashboard'])->name('hotels.dashboard');
