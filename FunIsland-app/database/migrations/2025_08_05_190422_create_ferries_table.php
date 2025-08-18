@@ -26,6 +26,8 @@ return new class extends Migration
             $table->time('departure_time');
             $table->string('departure_location');
             $table->string('arrival_location');
+            $table->foreignId('departure_location_id')->references('id')->on('locations');
+            $table->foreignId('arrival_location_id')->references('id')->on('locations');
             $table->decimal('price', 10, 2);
             $table->integer('remaining_seats');
             $table->boolean('is_available')->default(true);
