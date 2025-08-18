@@ -111,6 +111,7 @@ Route::middleware(['auth', 'management'])->prefix('management')->name('managemen
     // Ferry Management Routes
     Route::middleware(['permission:canManageFerries'])->prefix('ferries')->name('ferries.')->group(function () {
         Route::get('/', [FerryController::class, 'index'])->name('index');
+        Route::get('/dashboard', [FerryController::class, 'dashboard'])->name('dashboard');
         Route::get('/create', [FerryController::class, 'create'])->name('create');
         Route::post('/', [FerryController::class, 'store'])->name('store');
         Route::get('/{ferry}', [FerryController::class, 'show'])->name('show');
@@ -118,6 +119,15 @@ Route::middleware(['auth', 'management'])->prefix('management')->name('managemen
         Route::put('/{ferry}', [FerryController::class, 'update'])->name('update');
         Route::delete('/{ferry}', [FerryController::class, 'destroy'])->name('destroy');
         Route::get('/{ferry}/schedules', [FerryController::class, 'schedules'])->name('schedules');
+        Route::post('/{ferry}/schedules', [FerryController::class, 'storeSchedule'])->name('schedules.store');
+        Route::delete('/{ferry}/schedules/{schedule}', [FerryController::class, 'destroySchedule'])->name('schedules.destroy');
+        Route::get('/schedules/all', [FerryController::class, 'allSchedules'])->name('schedules.all');
+        
+        // Ferry Ticket Management Routes
+        Route::get('/tickets/management', [FerryController::class, 'ticketManagement'])->name('tickets.management');
+        Route::get('/tickets/{ticket}', [FerryController::class, 'showTicket'])->name('tickets.show');
+        Route::put('/tickets/{ticket}/status', [FerryController::class, 'updateTicketStatus'])->name('tickets.status.update');
+        Route::get('/my-tickets', [FerryController::class, 'myTickets'])->name('tickets.my');
     });
 
     // Theme Park Management Routes
@@ -175,7 +185,16 @@ Route::middleware(['auth', 'role:administrator'])->prefix('admin')->name('admin.
     Route::put('/users/{user}', [\App\Http\Controllers\AdminController::class, 'updateUser'])->name('users.update');
     Route::delete('/users/{user}', [\App\Http\Controllers\AdminController::class, 'destroyUser'])->name('users.destroy');
     Route::get('/roles', [\App\Http\Controllers\AdminController::class, 'roles'])->name('roles');
-    Route::get('/system', [\App\Http\Controllers\AdminController::class, 'system'])->name('system');
+    Route::get('/settings', [\App\Http\Controllers\AdminController::class, 'settings'])->name('settings');
+});
+
+// Admin and Hotel Manager booking management routes
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/bookings', [\App\Http\Controllers\AdminController::class, 'bookings'])->name('bookings');
+    Route::get('/bookings/{booking}', [\App\Http\Controllers\AdminController::class, 'showBooking'])->name('bookings.show');
+    Route::get('/bookings/{booking}/edit', [\App\Http\Controllers\AdminController::class, 'editBooking'])->name('bookings.edit');
+    Route::put('/bookings/{booking}', [\App\Http\Controllers\AdminController::class, 'updateBooking'])->name('bookings.update');
+    Route::delete('/bookings/{booking}', [\App\Http\Controllers\AdminController::class, 'cancelBooking'])->name('bookings.cancel');
 });
 
 // Customer-specific routes

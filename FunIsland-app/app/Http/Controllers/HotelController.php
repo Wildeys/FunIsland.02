@@ -255,10 +255,63 @@ class HotelController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        $totalHotels = Hotel::count();
-        $totalBookings = 0; // TODO: Add when booking model is ready
-        $recentBookings = []; // TODO: Add when booking model is ready
+        // Get all hotel bookings
+        $hotelBookingsQuery = Booking::where('booking_type', 'hotel')
+            ->whereNotNull('hotel_id');
         
-        return view('hotels.management.dashboard', compact('totalHotels', 'totalBookings', 'recentBookings'));
+        // If not admin, only show bookings for hotels the user manages
+        if (!auth()->user()->isAdministrator()) {
+            // For now, show all hotel bookings. In a more complex system,
+            // you'd filter by hotels the manager is responsible for
+            // $hotelBookingsQuery->whereHas('hotel', function($q) {
+            //     $q->where('manager_id', auth()->id());
+            // });
+        }
+
+        $totalHotels = hotel::count();
+        $totalBookings = $hotelBookingsQuery->count();
+        
+        // This month's bookings
+        $thisMonthBookings = $hotelBookingsQuery->clone()
+            ->whereMonth('booked_at', Carbon::now()->month)
+            ->whereYear('booked_at', Carbon::now()->year)
+            ->count();
+        
+        // Total revenue from paid bookings
+        $totalRevenue = $hotelBookingsQuery->clone()
+            ->where('payment_status', 'paid')
+            ->sum('total_amount');
+        
+        // Recent bookings (last 10)
+        $recentBookings = $hotelBookingsQuery->clone()
+            ->with(['user', 'hotel', 'room'])
+            ->orderBy('booked_at', 'desc')
+            ->take(10)
+            ->get();
+        
+        // Booking trends data for the last 12 months
+        $bookingTrends = [];
+        for ($i = 11; $i >= 0; $i--) {
+            $date = Carbon::now()->subMonths($i);
+            $count = $hotelBookingsQuery->clone()
+                ->whereMonth('booked_at', $date->month)
+                ->whereYear('booked_at', $date->year)
+                ->count();
+            
+            $bookingTrends[] = [
+                'month' => $date->format('M Y'),
+                'count' => $count,
+                'short_month' => $date->format('M'),
+            ];
+        }
+        
+        return view('hotels.management.dashboard', compact(
+            'totalHotels', 
+            'totalBookings', 
+            'thisMonthBookings',
+            'totalRevenue',
+            'recentBookings',
+            'bookingTrends'
+        ));
     }
 }

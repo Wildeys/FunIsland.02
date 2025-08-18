@@ -107,9 +107,10 @@
                                 @csrf
                                 <input type="hidden" name="themepark_id" value="{{ $park->id }}">
                                 <input type="hidden" name="tickets" value="1">
+                                <input type="hidden" name="visit_date" value="{{ date('Y-m-d', strtotime('+1 day')) }}">
                                 <button type="submit" 
                                         class="w-full bg-green-600 text-white py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">
-                                    Buy Tickets
+                                    Quick Book (Tomorrow)
                                 </button>
                             </form>
                         </div>

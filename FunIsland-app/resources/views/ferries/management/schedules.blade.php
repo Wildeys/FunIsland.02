@@ -23,7 +23,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('ferries.schedules.store', $ferry->id) }}" method="POST" class="mt-6 space-y-6">
+            <form action="{{ route('management.ferries.schedules.store', $ferry->id) }}" method="POST" class="mt-6 space-y-6">
                 @csrf
                 <div class="bg-white shadow rounded-lg p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Add New Schedule</h3>
@@ -188,7 +188,7 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <form action="{{ route('ferries.schedules.destroy', [$ferry->id, $schedule->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this schedule?');">
+                                        <form action="{{ route('management.ferries.schedules.destroy', [$ferry->id, $schedule->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this schedule?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>

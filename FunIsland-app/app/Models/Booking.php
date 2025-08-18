@@ -16,8 +16,10 @@ class Booking extends Model
         'hotel_room_id',
         'ferry_id',
         'event_id',
+        'themepark_id',
         'check_in_date',
         'check_out_date',
+        'visit_date',
         'guests',
         'total_amount',
         'status',
@@ -29,6 +31,7 @@ class Booking extends Model
     protected $casts = [
         'check_in_date' => 'date',
         'check_out_date' => 'date',
+        'visit_date' => 'date',
         'total_amount' => 'decimal:2',
         'booked_at' => 'datetime',
     ];
@@ -73,6 +76,11 @@ class Booking extends Model
         return $this->belongsTo(Event::class);
     }
 
+    public function themepark(): BelongsTo
+    {
+        return $this->belongsTo(themepark::class);
+    }
+
     // Scopes
     public function scopeHotelBookings($query)
     {
@@ -87,6 +95,11 @@ class Booking extends Model
     public function scopeEventBookings($query)
     {
         return $query->where('booking_type', 'event');
+    }
+
+    public function scopeThemeparkBookings($query)
+    {
+        return $query->where('booking_type', 'themepark');
     }
 
     public function scopePending($query)

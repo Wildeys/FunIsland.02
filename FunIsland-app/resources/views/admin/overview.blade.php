@@ -15,7 +15,7 @@
 
     <div class="p-6">
         <!-- Key Metrics -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
             <!-- Total Users -->
             <div class="bg-gradient-to-r from-blue-500 to-blue-600 overflow-hidden shadow rounded-lg">
                 <div class="p-5">
@@ -68,28 +68,54 @@
                 </div>
             </div>
 
-            <!-- Total Hotels -->
-            <div class="bg-gradient-to-r from-purple-500 to-purple-600 overflow-hidden shadow rounded-lg">
+            <!-- Total Bookings -->
+            <div class="bg-gradient-to-r from-indigo-500 to-indigo-600 overflow-hidden shadow rounded-lg">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
                             <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                             </svg>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-purple-100 truncate">Hotels</dt>
-                                <dd class="text-lg font-medium text-white">{{ $stats['total_hotels'] }}</dd>
+                                <dt class="text-sm font-medium text-indigo-100 truncate">Total Bookings</dt>
+                                <dd class="text-lg font-medium text-white">{{ $stats['total_bookings'] }}</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
-                <div class="bg-purple-700 px-5 py-3">
+                <div class="bg-indigo-700 px-5 py-3">
                     <div class="text-sm">
-                        <a href="{{ route('hotels.management.index') }}" class="font-medium text-purple-200 hover:text-white">
-                            Manage hotels
+                        <a href="{{ route('admin.bookings') }}" class="font-medium text-indigo-200 hover:text-white">
+                            Manage bookings
                         </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Total Revenue -->
+            <div class="bg-gradient-to-r from-emerald-500 to-emerald-600 overflow-hidden shadow rounded-lg">
+                <div class="p-5">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-emerald-100 truncate">Total Revenue</dt>
+                                <dd class="text-lg font-medium text-white">${{ number_format($stats['total_revenue'], 2) }}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-emerald-700 px-5 py-3">
+                    <div class="text-sm">
+                        <span class="font-medium text-emerald-200">
+                            Paid bookings only
+                        </span>
                     </div>
                 </div>
             </div>
@@ -150,15 +176,19 @@
                 </div>
             </div>
 
-            <!-- Recent Activity -->
+            <!-- Recent Bookings -->
             <div class="bg-white overflow-hidden shadow rounded-lg">
                 <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900">Recent Users</h3>
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-900">Recent Bookings</h3>
+                        <a href="{{ route('admin.bookings') }}" class="text-sm text-indigo-600 hover:text-indigo-900">View all</a>
+                    </div>
                 </div>
                 <div class="p-6">
+                    @if($stats['recent_bookings']->count() > 0)
                     <div class="flow-root">
                         <ul class="-mb-8">
-                            @foreach($stats['recent_users'] as $user)
+                            @foreach($stats['recent_bookings'] as $booking)
                             <li>
                                 <div class="relative pb-8">
                                     @if(!$loop->last)
@@ -166,20 +196,27 @@
                                     @endif
                                     <div class="relative flex space-x-3">
                                         <div>
-                                            <span class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
-                                                <span class="text-white text-sm font-medium">{{ substr($user->name, 0, 1) }}</span>
+                                            <span class="h-8 w-8 rounded-full {{ $booking->status === 'confirmed' ? 'bg-green-500' : ($booking->status === 'pending' ? 'bg-yellow-500' : ($booking->status === 'cancelled' ? 'bg-red-500' : 'bg-blue-500')) }} flex items-center justify-center ring-8 ring-white">
+                                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                                </svg>
                                             </span>
                                         </div>
                                         <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                                             <div>
                                                 <p class="text-sm text-gray-500">
-                                                    <span class="font-medium text-gray-900">{{ $user->name }}</span> 
-                                                    joined as {{ $user->role->display_name }}
+                                                    <a href="{{ route('admin.bookings.show', $booking) }}" class="font-medium text-gray-900 hover:text-indigo-600">{{ $booking->booking_reference }}</a> 
+                                                    - {{ ucfirst($booking->booking_type) }} booking
                                                 </p>
-                                                <p class="text-xs text-gray-400">{{ $user->email }}</p>
+                                                <p class="text-xs text-gray-400">
+                                                    {{ $booking->user->name }} • ${{ number_format($booking->total_amount, 2) }} 
+                                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {{ $booking->status === 'confirmed' ? 'bg-green-100 text-green-800' : ($booking->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ($booking->status === 'cancelled' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800')) }}">
+                                                        {{ ucfirst($booking->status) }}
+                                                    </span>
+                                                </p>
                                             </div>
                                             <div class="text-right text-sm whitespace-nowrap text-gray-500">
-                                                <time>{{ $user->created_at->diffForHumans() }}</time>
+                                                <time>{{ $booking->booked_at->diffForHumans() }}</time>
                                             </div>
                                         </div>
                                     </div>
@@ -188,6 +225,15 @@
                             @endforeach
                         </ul>
                     </div>
+                    @else
+                    <div class="text-center py-6">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">No bookings</h3>
+                        <p class="mt-1 text-sm text-gray-500">No bookings have been made yet.</p>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -241,6 +287,21 @@
                         <div class="ml-4">
                             <h4 class="text-sm font-medium text-gray-900">Role Assignment</h4>
                             <p class="text-sm text-gray-500">Manage user roles</p>
+                        </div>
+                    </a>
+
+                    <a href="{{ route('admin.bookings') }}" 
+                       class="flex items-center p-4 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-sm font-medium text-gray-900">Manage Bookings</h4>
+                            <p class="text-sm text-gray-500">View and edit bookings</p>
                         </div>
                     </a>
 

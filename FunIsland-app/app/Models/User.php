@@ -120,6 +120,12 @@ class User extends Authenticatable
                $this->hasRole('theme_park_manager');
     }
 
+    public function canManageBookings(): bool
+    {
+        return $this->hasRole('administrator') || 
+               $this->hasRole('hotel_manager');
+    }
+
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class);

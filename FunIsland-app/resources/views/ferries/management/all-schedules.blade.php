@@ -5,7 +5,7 @@
             <p class="text-sm text-gray-600">Manage all ferry schedules and routes</p>
         </div>
         <div class="flex items-center space-x-3">
-            <a href="{{ route('ferries.dashboard') }}" 
+            <a href="{{ route('management.ferries.dashboard') }}" 
                class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
                 Back to Dashboard
             </a>
@@ -112,7 +112,7 @@
                 </div>
                 <div class="bg-orange-700 px-5 py-3">
                     <div class="text-sm">
-                        <a href="{{ route('ferries.management.index') }}" class="font-medium text-orange-200 hover:text-white">
+                        <a href="{{ route('management.ferries.index') }}" class="font-medium text-orange-200 hover:text-white">
                             View all ferries →
                         </a>
                     </div>
@@ -172,9 +172,9 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <a href="{{ route('ferries.schedules', $schedule->ferry->id) }}" 
+                                                                                <a href="{{ route('management.ferries.schedules', $schedule->ferry->id) }}" 
                                        class="text-blue-600 hover:text-blue-900 mr-3">Manage</a>
-                                    <a href="{{ route('ferries.management.show', $schedule->ferry->id) }}" 
+                                                                         <a href="{{ route('management.ferries.show', $schedule->ferry->id) }}" 
                                        class="text-gray-600 hover:text-gray-900">View Ferry</a>
                                 </td>
                             </tr>
@@ -189,7 +189,7 @@
                         <h3 class="mt-2 text-sm font-medium text-gray-900">No schedules for today</h3>
                         <p class="mt-1 text-sm text-gray-500">Get started by creating schedules for your ferries.</p>
                         <div class="mt-6">
-                            <a href="{{ route('ferries.management.index') }}" 
+                            <a href="{{ route('management.ferries.index') }}" 
                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                                 Manage Ferries
                             </a>
@@ -266,11 +266,11 @@
                                         </div>
                                         
                                         <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between">
-                                            <a href="{{ route('ferries.schedules', $schedule->ferry->id) }}" 
+                                            <a href="{{ route('management.ferries.schedules', $schedule->ferry->id) }}" 
                                                class="text-blue-600 hover:text-blue-900 text-sm font-medium">
                                                 Manage Schedule
                                             </a>
-                                            <a href="{{ route('ferries.management.show', $schedule->ferry->id) }}" 
+                                            <a href="{{ route('management.ferries.show', $schedule->ferry->id) }}" 
                                                class="text-gray-600 hover:text-gray-900 text-sm">
                                                 View Ferry
                                             </a>
@@ -288,7 +288,7 @@
                         <h3 class="mt-2 text-sm font-medium text-gray-900">No upcoming schedules</h3>
                         <p class="mt-1 text-sm text-gray-500">Create schedules for your ferries to start accepting bookings.</p>
                         <div class="mt-6">
-                            <a href="{{ route('ferries.management.index') }}" 
+                            <a href="{{ route('management.ferries.index') }}" 
                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                                 Manage Ferries
                             </a>
