@@ -177,6 +177,56 @@ class ThemeparkController extends Controller
     }
 
     /**
+     * Handle theme park ticket booking
+     */
+    public function book(Request $request)
+    {
+        if (!auth()->check()) {
+            return redirect()->route('login')->with('error', 'Please login to book theme park tickets.');
+        }
+
+        $validated = $request->validate([
+            'themepark_id' => 'required|exists:themeparks,id',
+            'tickets' => 'required|integer|min:1|max:10',
+            'visit_date' => 'required|date|after_or_equal:today',
+            'special_requests' => 'nullable|string|max:1000',
+        ]);
+
+        $themepark = themepark::findOrFail($validated['themepark_id']);
+
+        // Check if theme park is active
+        if (!$themepark->isActive()) {
+            return back()->with('error', 'Sorry, this theme park is currently not available for booking.');
+        }
+
+        // Check capacity (simplified check)
+        if ($validated['tickets'] > 20) { // Max 20 tickets per booking
+            return back()->with('error', 'Maximum 20 tickets allowed per booking.');
+        }
+
+        // Calculate total amount
+        $totalAmount = $validated['tickets'] * $themepark->admission_price;
+
+        // Create booking using the main Booking model
+        $booking = \App\Models\Booking::create([
+            'booking_reference' => 'TP-' . strtoupper(uniqid()),
+            'user_id' => auth()->id(),
+            'booking_type' => 'themepark',
+            'themepark_id' => $themepark->id,
+            'visit_date' => $validated['visit_date'],
+            'guests' => $validated['tickets'],
+            'total_amount' => $totalAmount,
+            'status' => 'confirmed',
+            'payment_status' => 'paid',
+            'special_requests' => $validated['special_requests'],
+            'booked_at' => now(),
+        ]);
+
+        return redirect()->route('themeparks.customer.index')
+            ->with('success', "Theme park tickets booked successfully! Booking reference: {$booking->booking_reference}");
+    }
+
+    /**
      * Display the theme park management dashboard.
      */
     public function dashboard()

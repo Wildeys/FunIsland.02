@@ -16,7 +16,9 @@ class FerryTicketing extends Model
         'date',
         'number_of_guests',
         'total_price',
-        'status'
+        'status',
+        'ticket_reference',
+        'notes'
     ];
 
     protected $casts = [

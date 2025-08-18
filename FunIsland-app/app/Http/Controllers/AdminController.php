@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Role;
-use App\Models\Hotel;
-use App\Models\Ferry;
-use App\Models\ThemePark;
+use App\Models\hotel;
+use App\Models\ferry;
+use App\Models\themepark;
+use App\Models\Booking;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -40,10 +41,15 @@ class AdminController extends Controller
             'total_managers' => User::whereHas('role', function($q) {
                 $q->whereIn('name', ['hotel_manager', 'ferry_operator', 'theme_park_manager']);
             })->count(),
-            'total_hotels' => Hotel::count(),
-            'total_ferries' => Ferry::count(),
-            'total_themeparks' => ThemePark::count(),
+            'total_hotels' => hotel::count(),
+            'total_ferries' => ferry::count(),
+            'total_themeparks' => themepark::count(),
+            'total_bookings' => Booking::count(),
+            'pending_bookings' => Booking::where('status', 'pending')->count(),
+            'confirmed_bookings' => Booking::where('status', 'confirmed')->count(),
+            'total_revenue' => Booking::where('payment_status', 'paid')->sum('total_amount'),
             'recent_users' => User::with('role')->latest()->take(5)->get(),
+            'recent_bookings' => Booking::with(['user', 'hotel', 'ferry', 'themepark'])->latest()->take(5)->get(),
             'user_roles' => Role::withCount('users')->get()
         ];
 
@@ -167,10 +173,14 @@ class AdminController extends Controller
             ->with('success', 'User deleted successfully!');
     }
 
+
+
+
+
     /**
      * Role assignment page
      */
-    public function roleAssignment()
+    public function roles()
     {
         $roles = Role::withCount('users')->get();
         $users = User::with('role')->get();
@@ -179,28 +189,162 @@ class AdminController extends Controller
     }
 
     /**
-     * Bulk role assignment
-     */
-    public function assignRoles(Request $request)
-    {
-        $request->validate([
-            'user_roles' => 'required|array',
-            'user_roles.*' => 'exists:roles,id'
-        ]);
-
-        foreach ($request->user_roles as $userId => $roleId) {
-            User::find($userId)->update(['role_id' => $roleId]);
-        }
-
-        return redirect()->route('admin.roles')
-            ->with('success', 'Roles assigned successfully!');
-    }
-
-    /**
      * System settings
      */
     public function settings()
     {
         return view('admin.settings');
+    }
+
+    /**
+     * Booking management index - accessible to admin and hotel managers
+     */
+    public function bookings(Request $request)
+    {
+        // Check if user can manage bookings (admin or hotel manager)
+        if (!auth()->user()->isAdministrator() && !auth()->user()->isHotelManager()) {
+            abort(403, 'Unauthorized access to booking management.');
+        }
+
+        $query = Booking::with(['user', 'hotel', 'room', 'ferry', 'event', 'themepark']);
+
+        // If hotel manager, only show hotel bookings
+        if (auth()->user()->isHotelManager() && !auth()->user()->isAdministrator()) {
+            $query->whereNotNull('hotel_id');
+        }
+
+        // Search functionality
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('booking_reference', 'like', "%{$search}%")
+                  ->orWhereHas('user', function($subQ) use ($search) {
+                      $subQ->where('name', 'like', "%{$search}%")
+                           ->orWhere('email', 'like', "%{$search}%");
+                  });
+            });
+        }
+
+        // Status filter
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Booking type filter
+        if ($request->filled('booking_type')) {
+            $query->where('booking_type', $request->booking_type);
+        }
+
+        // Payment status filter
+        if ($request->filled('payment_status')) {
+            $query->where('payment_status', $request->payment_status);
+        }
+
+        // Date range filter
+        if ($request->filled('date_from')) {
+            $query->whereDate('booked_at', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('booked_at', '<=', $request->date_to);
+        }
+
+        $bookings = $query->orderBy('booked_at', 'desc')->paginate(20);
+
+        return view('admin.bookings.index', compact('bookings'));
+    }
+
+    /**
+     * Show booking details
+     */
+    public function showBooking(Booking $booking)
+    {
+        // Check if user can view this booking
+        if (!auth()->user()->isAdministrator() && !auth()->user()->isHotelManager()) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        // If hotel manager, only allow viewing hotel bookings
+        if (auth()->user()->isHotelManager() && !auth()->user()->isAdministrator() && !$booking->hotel_id) {
+            abort(403, 'Unauthorized access to this booking.');
+        }
+
+        $booking->load(['user', 'hotel', 'room', 'ferry', 'event', 'themepark']);
+        return view('admin.bookings.show', compact('booking'));
+    }
+
+    /**
+     * Show edit booking form
+     */
+    public function editBooking(Booking $booking)
+    {
+        // Check if user can edit this booking
+        if (!auth()->user()->isAdministrator() && !auth()->user()->isHotelManager()) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        // If hotel manager, only allow editing hotel bookings
+        if (auth()->user()->isHotelManager() && !auth()->user()->isAdministrator() && !$booking->hotel_id) {
+            abort(403, 'Unauthorized access to this booking.');
+        }
+
+        $booking->load(['user', 'hotel', 'room', 'ferry', 'event', 'themepark']);
+        return view('admin.bookings.edit', compact('booking'));
+    }
+
+    /**
+     * Update booking
+     */
+    public function updateBooking(Request $request, Booking $booking)
+    {
+        // Check if user can update this booking
+        if (!auth()->user()->isAdministrator() && !auth()->user()->isHotelManager()) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        // If hotel manager, only allow updating hotel bookings
+        if (auth()->user()->isHotelManager() && !auth()->user()->isAdministrator() && !$booking->hotel_id) {
+            abort(403, 'Unauthorized access to this booking.');
+        }
+
+        $request->validate([
+            'status' => ['required', 'in:pending,confirmed,cancelled,completed'],
+            'payment_status' => ['required', 'in:pending,paid,refunded'],
+            'special_requests' => ['nullable', 'string', 'max:1000'],
+            'total_amount' => ['required', 'numeric', 'min:0'],
+        ]);
+
+        $booking->update([
+            'status' => $request->status,
+            'payment_status' => $request->payment_status,
+            'special_requests' => $request->special_requests,
+            'total_amount' => $request->total_amount,
+        ]);
+
+        return redirect()->route('admin.bookings.show', $booking)
+            ->with('success', 'Booking updated successfully!');
+    }
+
+    /**
+     * Cancel booking
+     */
+    public function cancelBooking(Booking $booking)
+    {
+        // Check if user can cancel this booking
+        if (!auth()->user()->isAdministrator() && !auth()->user()->isHotelManager()) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        // If hotel manager, only allow canceling hotel bookings
+        if (auth()->user()->isHotelManager() && !auth()->user()->isAdministrator() && !$booking->hotel_id) {
+            abort(403, 'Unauthorized access to this booking.');
+        }
+
+        $booking->update([
+            'status' => 'cancelled',
+            'payment_status' => $booking->payment_status === 'paid' ? 'refunded' : $booking->payment_status
+        ]);
+
+        return redirect()->route('admin.bookings')
+            ->with('success', 'Booking cancelled successfully!');
     }
 }

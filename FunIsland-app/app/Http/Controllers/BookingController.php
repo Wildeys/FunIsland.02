@@ -63,7 +63,7 @@ class BookingController extends Controller
             abort(403, 'Unauthorized access to booking details.');
         }
 
-        $booking->load(['user', 'hotel', 'room', 'ferry', 'event']);
+        $booking->load(['user', 'hotel', 'room', 'ferry', 'event', 'themepark']);
         return view('bookings.show', compact('booking'));
     }
 
@@ -142,7 +142,7 @@ class BookingController extends Controller
     {
         $user = auth()->user();
         $bookings = Booking::where('user_id', $user->id)
-            ->with(['hotel', 'room', 'ferry', 'event'])
+            ->with(['hotel', 'room', 'ferry', 'event', 'themepark'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

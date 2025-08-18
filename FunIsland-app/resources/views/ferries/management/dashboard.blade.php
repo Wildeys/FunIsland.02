@@ -34,7 +34,7 @@
                 </div>
                 <div class="bg-blue-700 px-5 py-3">
                     <div class="text-sm">
-                        <a href="{{ route('ferries.management.index') }}" class="font-medium text-blue-200 hover:text-white">
+                        <a href="{{ route('management.ferries.index') }}" class="font-medium text-blue-200 hover:text-white">
                             View all ferries
                         </a>
                     </div>
@@ -94,27 +94,27 @@
             </div>
 
             <!-- Total Bookings -->
-            <div class="bg-gradient-to-r from-orange-500 to-orange-600 overflow-hidden shadow rounded-lg">
+            <div class="bg-gradient-to-r from-purple-500 to-purple-600 overflow-hidden shadow rounded-lg">
                 <div class="p-5">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
                             <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"></path>
                             </svg>
                         </div>
                         <div class="ml-5 w-0 flex-1">
                             <dl>
-                                <dt class="text-sm font-medium text-orange-100 truncate">Total Bookings</dt>
+                                <dt class="text-sm font-medium text-purple-100 truncate">Ticket Requests</dt>
                                 <dd class="text-lg font-medium text-white">{{ $stats['total_bookings'] }}</dd>
                             </dl>
                         </div>
                     </div>
                 </div>
-                <div class="bg-orange-700 px-5 py-3">
+                <div class="bg-purple-700 px-5 py-3">
                     <div class="text-sm">
-                        <span class="font-medium text-orange-200">
-                            All time bookings
-                        </span>
+                        <a href="{{ route('management.ferries.tickets.management') }}" class="font-medium text-purple-200 hover:text-white">
+                            Manage tickets
+                        </a>
                     </div>
                 </div>
             </div>
@@ -144,7 +144,7 @@
                             </div>
                         </a>
 
-                        <a href="{{ route('ferries.management.index') }}" 
+                        <a href="{{ route('management.ferries.index') }}" 
                            class="flex items-center p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
                             <div class="flex-shrink-0">
                                 <div class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
@@ -159,7 +159,7 @@
                             </div>
                         </a>
 
-                        <a href="{{ route('ferries.all-schedules') }}" 
+                        <a href="{{ route('management.ferries.schedules.all') }}" 
                            class="flex items-center p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors">
                             <div class="flex-shrink-0">
                                 <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
@@ -195,13 +195,13 @@
             <!-- Recent Activity -->
             <div class="bg-white shadow rounded-lg">
                 <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900">Recent Bookings</h3>
+                    <h3 class="text-lg font-medium text-gray-900">Recent Ticket Requests</h3>
                 </div>
                 <div class="p-6">
                     @if(count($stats['recent_bookings']) > 0)
                         <div class="flow-root">
                             <ul class="-mb-8">
-                                @foreach($stats['recent_bookings'] as $booking)
+                                @foreach($stats['recent_bookings'] as $ticket)
                                 <li>
                                     <div class="relative pb-8">
                                         @if(!$loop->last)
@@ -209,21 +209,41 @@
                                         @endif
                                         <div class="relative flex space-x-3">
                                             <div>
-                                                <span class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center ring-8 ring-white">
-                                                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                    </svg>
+                                                <span class="h-8 w-8 rounded-full 
+                                                    @if($ticket->status === 'confirmed') bg-green-500
+                                                    @elseif($ticket->status === 'cancelled') bg-red-500
+                                                    @else bg-yellow-500 @endif 
+                                                    flex items-center justify-center ring-8 ring-white">
+                                                    @if($ticket->status === 'confirmed')
+                                                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                    @elseif($ticket->status === 'cancelled')
+                                                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"></path>
+                                                        </svg>
+                                                    @else
+                                                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                            <path d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"></path>
+                                                        </svg>
+                                                    @endif
                                                 </span>
                                             </div>
                                             <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                                                 <div>
                                                     <p class="text-sm text-gray-500">
-                                                        New booking from <span class="font-medium text-gray-900">{{ $booking->user->name }}</span>
+                                                        {{ ucfirst($ticket->status) }} ticket request from <span class="font-medium text-gray-900">{{ $ticket->user->name }}</span>
                                                     </p>
-                                                    <p class="text-xs text-gray-400">{{ $booking->ferry->name }}</p>
+                                                    <p class="text-xs text-gray-400">
+                                                        {{ $ticket->ferrySchedule->ferry->name }} • 
+                                                        {{ $ticket->ferrySchedule->departureLocation->location_name }} → 
+                                                        {{ $ticket->ferrySchedule->arrivalLocation->location_name }} • 
+                                                        {{ $ticket->number_of_guests }} guests
+                                                    </p>
                                                 </div>
                                                 <div class="text-right text-sm whitespace-nowrap text-gray-500">
-                                                    <time>{{ $booking->created_at->diffForHumans() }}</time>
+                                                    <time>{{ $ticket->created_at->diffForHumans() }}</time>
+                                                    <p class="text-xs text-gray-400">${{ number_format($ticket->total_price, 2) }}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -233,12 +253,12 @@
                             </ul>
                         </div>
                     @else
-                        <div class="text-center py-6">
+                        <div class="text-center py-4">
                             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                             </svg>
-                            <h3 class="mt-2 text-sm font-medium text-gray-900">No recent bookings</h3>
-                            <p class="mt-1 text-sm text-gray-500">Get started by promoting your ferry services.</p>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900">No recent ticket requests</h3>
+                            <p class="mt-1 text-sm text-gray-500">Ticket requests will appear here as customers book ferry services.</p>
                         </div>
                     @endif
                 </div>
@@ -261,7 +281,7 @@
                             You have {{ $stats['total_ferries'] }} ferries with {{ $stats['active_routes'] }} active routes.
                         </p>
                         <div class="mt-6">
-                            <a href="{{ route('ferries.management.index') }}" 
+                            <a href="{{ route('management.ferries.index') }}" 
                                class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>

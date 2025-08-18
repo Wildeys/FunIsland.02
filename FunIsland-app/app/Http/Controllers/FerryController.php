@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\ferry as Ferry;
 use App\Models\Location;
 use App\Models\FerrySchedule;
+use App\Models\FerryTicketing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class FerryController extends Controller
 {
@@ -196,14 +198,21 @@ class FerryController extends Controller
                 $query->where('is_available', true)
                       ->where('date', '>=', now()->format('Y-m-d'));
             })->count();
-        $totalBookings = 0; // TODO: Add when booking model is ready
-        $recentBookings = []; // TODO: Add when booking model is ready
+        $totalBookings = FerryTicketing::count(); // Total ticket requests
+        $pendingTickets = FerryTicketing::where('status', 'pending')->count(); // Pending tickets
+        
+        // Get recent ticket requests
+        $recentBookings = FerryTicketing::with(['user', 'ferrySchedule.ferry', 'ferrySchedule.departureLocation', 'ferrySchedule.arrivalLocation'])
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
         
         $stats = [
             'total_ferries' => $totalFerries,
             'total_schedules' => $totalSchedules,
             'active_routes' => $activeRoutes,
             'total_bookings' => $totalBookings,
+            'pending_tickets' => $pendingTickets,
             'recent_bookings' => $recentBookings,
         ];
         
@@ -330,28 +339,131 @@ class FerryController extends Controller
 
         $validated = $request->validate([
             'ferry_id' => 'required|exists:ferries,id',
-            'schedule_id' => 'nullable|exists:ferry_schedule,id',
-            'passengers' => 'required|integer|min:1|max:10'
+            'schedule_id' => 'required|exists:ferry_schedule,id',
+            'passengers' => 'required|integer|min:1|max:10',
+            'hotel_booking_id' => 'nullable|exists:bookings,id'
         ]);
 
-        $ferry = Ferry::findOrFail($validated['ferry_id']);
-
-        // If schedule_id is provided, redirect to specific schedule booking
-        if (isset($validated['schedule_id'])) {
-            $schedule = FerrySchedule::findOrFail($validated['schedule_id']);
-            
-            // Check availability
-            if (!$schedule->is_available || $schedule->remaining_seats < $validated['passengers']) {
-                return back()->with('error', 'Sorry, this schedule is not available or doesn\'t have enough seats.');
-            }
-
-            // For now, create a simple booking redirect - this can be enhanced later
-            return redirect()->route('ferries.show', $ferry->id)
-                ->with('success', 'Schedule selected! Contact customer service to complete your booking.');
+        $schedule = FerrySchedule::findOrFail($validated['schedule_id']);
+        
+        // Check availability
+        if (!$schedule->is_available || $schedule->remaining_seats < $validated['passengers']) {
+            return back()->with('error', 'Sorry, this schedule is not available or doesn\'t have enough seats.');
         }
 
-        // If no specific schedule, redirect to ferry details to choose schedule
-        return redirect()->route('ferries.show', $ferry->id)
-            ->with('info', 'Please select a specific departure time to complete your booking.');
+        try {
+            DB::beginTransaction();
+
+            // Create ferry ticket request
+            $ticket = FerryTicketing::create([
+                'hotel_booking_id' => $validated['hotel_booking_id'] ?? null,
+                'ferry_schedule_id' => $schedule->id,
+                'user_id' => auth()->id(),
+                'date' => $schedule->date,
+                'number_of_guests' => $validated['passengers'],
+                'total_price' => $schedule->price * $validated['passengers'],
+                'status' => 'pending',
+                'ticket_reference' => 'FT-' . strtoupper(Str::random(8))
+            ]);
+
+            // Temporarily reserve the seats (will be released if cancelled)
+            $schedule->decrement('remaining_seats', $validated['passengers']);
+
+            DB::commit();
+
+            return back()->with('success', 'Your ferry ticket request has been submitted successfully! Reference: ' . $ticket->ticket_reference . '. Please wait for confirmation from the ferry operator.');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Sorry, there was an error processing your ticket request. Please try again.');
+        }
+    }
+
+    /**
+     * Display all ferry tickets for management
+     */
+    public function ticketManagement()
+    {
+        if (!auth()->user()->canManageFerries()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $tickets = FerryTicketing::with(['user', 'ferrySchedule.ferry', 'ferrySchedule.departureLocation', 'ferrySchedule.arrivalLocation'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        return view('ferries.management.tickets.index', compact('tickets'));
+    }
+
+    /**
+     * Show a specific ticket
+     */
+    public function showTicket(FerryTicketing $ticket)
+    {
+        if (!auth()->user()->canManageFerries() && auth()->id() !== $ticket->user_id) {
+            abort(403, 'Unauthorized');
+        }
+
+        $ticket->load(['user', 'ferrySchedule.ferry', 'ferrySchedule.departureLocation', 'ferrySchedule.arrivalLocation']);
+
+        if (auth()->user()->canManageFerries()) {
+            return view('ferries.management.tickets.show', compact('ticket'));
+        }
+
+        return view('ferries.customer.tickets.show', compact('ticket'));
+    }
+
+    /**
+     * Update ticket status
+     */
+    public function updateTicketStatus(Request $request, FerryTicketing $ticket)
+    {
+        if (!auth()->user()->canManageFerries()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|in:confirmed,cancelled',
+            'notes' => 'nullable|string|max:500'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // If cancelling, return the seats
+            if ($validated['status'] === 'cancelled' && $ticket->status !== 'cancelled') {
+                $ticket->ferrySchedule->increment('remaining_seats', $ticket->number_of_guests);
+            }
+            // If un-cancelling, remove the seats again
+            elseif ($validated['status'] !== 'cancelled' && $ticket->status === 'cancelled') {
+                $ticket->ferrySchedule->decrement('remaining_seats', $ticket->number_of_guests);
+            }
+
+            $ticket->update([
+                'status' => $validated['status'],
+                'notes' => $validated['notes']
+            ]);
+
+            DB::commit();
+
+            return back()->with('success', 'Ticket status updated successfully!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Error updating ticket status. Please try again.');
+        }
+    }
+
+    /**
+     * Show user's ferry tickets
+     */
+    public function myTickets()
+    {
+        $tickets = FerryTicketing::with(['ferrySchedule.ferry', 'ferrySchedule.departureLocation', 'ferrySchedule.arrivalLocation'])
+            ->where('user_id', auth()->id())
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('ferries.customer.tickets.index', compact('tickets'));
     }
 }

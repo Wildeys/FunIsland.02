@@ -62,7 +62,7 @@
                         <div class="ml-5 w-0 flex-1">
                             <dl>
                                 <dt class="text-sm font-medium text-gray-500 truncate">This Month</dt>
-                                <dd class="text-lg font-medium text-gray-900">0</dd>
+                                <dd class="text-lg font-medium text-gray-900">{{ $thisMonthBookings }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
                         <div class="ml-5 w-0 flex-1">
                             <dl>
                                 <dt class="text-sm font-medium text-gray-500 truncate">Revenue</dt>
-                                <dd class="text-lg font-medium text-gray-900">$0</dd>
+                                <dd class="text-lg font-medium text-gray-900">${{ number_format($totalRevenue, 2) }}</dd>
                             </dl>
                         </div>
                     </div>
@@ -128,18 +128,18 @@
                         </div>
                     </a>
 
-                    <a href="#" 
+                    <a href="{{ route('admin.bookings') }}" 
                        class="flex items-center p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors">
                         <div class="flex-shrink-0">
                             <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center">
                                 <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                                 </svg>
                             </div>
                         </div>
                         <div class="ml-4">
-                            <h4 class="text-sm font-medium text-gray-900">View Reports</h4>
-                            <p class="text-sm text-gray-500">Analytics and insights</p>
+                            <h4 class="text-sm font-medium text-gray-900">Manage Bookings</h4>
+                            <p class="text-sm text-gray-500">View and edit hotel bookings</p>
                         </div>
                     </a>
                 </div>
@@ -160,20 +160,32 @@
                                 @foreach($recentBookings as $booking)
                                 <li>
                                     <div class="relative pb-8">
+                                        @if(!$loop->last)
+                                        <span class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200"></span>
+                                        @endif
                                         <div class="relative flex space-x-3">
                                             <div>
-                                                <span class="h-8 w-8 rounded-full bg-green-500 flex items-center justify-center ring-8 ring-white">
-                                                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
-                                                        <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                <span class="h-8 w-8 rounded-full {{ $booking->status === 'confirmed' ? 'bg-green-500' : ($booking->status === 'pending' ? 'bg-yellow-500' : ($booking->status === 'cancelled' ? 'bg-red-500' : 'bg-blue-500')) }} flex items-center justify-center ring-8 ring-white">
+                                                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                                                     </svg>
                                                 </span>
                                             </div>
                                             <div class="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                                                 <div>
-                                                    <p class="text-sm text-gray-500">New booking for <span class="font-medium text-gray-900">{{ $booking->hotel->name }}</span></p>
+                                                    <p class="text-sm text-gray-500">
+                                                        <span class="font-medium text-gray-900">{{ $booking->booking_reference }}</span> - {{ $booking->hotel->name ?? 'Hotel' }}
+                                                    </p>
+                                                    <p class="text-xs text-gray-400">
+                                                        {{ $booking->user->name }} • ${{ number_format($booking->total_amount, 2) }}
+                                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ml-2 {{ $booking->status === 'confirmed' ? 'bg-green-100 text-green-800' : ($booking->status === 'pending' ? 'bg-yellow-100 text-yellow-800' : ($booking->status === 'cancelled' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800')) }}">
+                                                            {{ ucfirst($booking->status) }}
+                                                        </span>
+                                                    </p>
                                                 </div>
                                                 <div class="text-right text-sm whitespace-nowrap text-gray-500">
-                                                    <time>{{ $booking->created_at->format('M j') }}</time>
+                                                    <time>{{ $booking->booked_at->format('M j') }}</time>
+                                                    <p class="text-xs text-gray-400">{{ $booking->booked_at->format('g:i A') }}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -194,21 +206,59 @@
                 </div>
             </div>
 
-            <!-- Performance Chart Placeholder -->
+            <!-- Booking Trends Chart -->
             <div class="bg-white shadow-sm rounded-lg">
                 <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-medium text-gray-900">Booking Trends</h3>
+                    <h3 class="text-lg font-medium text-gray-900">Booking Trends (Last 12 Months)</h3>
                 </div>
                 <div class="p-6">
-                    <div class="text-center py-12">
-                        <div class="mx-auto h-24 w-24 text-gray-400">
-                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                            </svg>
+                    @if(collect($bookingTrends)->sum('count') > 0)
+                        <div class="relative">
+                            <!-- Simple Bar Chart -->
+                            <div class="flex items-end justify-between h-48 space-x-1">
+                                @php
+                                    $maxCount = collect($bookingTrends)->max('count');
+                                    $maxHeight = 180; // Maximum height in pixels
+                                @endphp
+                                @foreach($bookingTrends as $trend)
+                                    @php
+                                        $height = $maxCount > 0 ? ($trend['count'] / $maxCount) * $maxHeight : 0;
+                                    @endphp
+                                    <div class="flex flex-col items-center flex-1">
+                                        <div class="w-full bg-blue-200 rounded-t relative" 
+                                             style="height: {{ max($height, 4) }}px;"
+                                             title="{{ $trend['month'] }}: {{ $trend['count'] }} bookings">
+                                            <div class="absolute inset-0 bg-blue-500 rounded-t hover:bg-blue-600 transition-colors"></div>
+                                        </div>
+                                        <div class="text-xs text-gray-500 mt-2 text-center">
+                                            {{ $trend['short_month'] }}
+                                        </div>
+                                        <div class="text-xs text-gray-400 text-center">
+                                            {{ $trend['count'] }}
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            
+                            <!-- Legend -->
+                            <div class="mt-4 flex items-center justify-center">
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <div class="w-3 h-3 bg-blue-500 rounded mr-2"></div>
+                                    <span>Monthly Bookings</span>
+                                </div>
+                            </div>
                         </div>
-                        <h3 class="mt-2 text-sm font-medium text-gray-900">Charts Coming Soon</h3>
-                        <p class="mt-1 text-sm text-gray-500">Booking analytics and trends will be displayed here</p>
-                    </div>
+                    @else
+                        <div class="text-center py-12">
+                            <div class="mx-auto h-24 w-24 text-gray-400">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="mt-2 text-sm font-medium text-gray-900">No booking data yet</h3>
+                            <p class="mt-1 text-sm text-gray-500">Booking trends will appear here once you have bookings</p>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

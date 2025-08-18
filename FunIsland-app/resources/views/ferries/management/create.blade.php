@@ -22,7 +22,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('ferries.store') }}" method="POST" class="mt-6 space-y-6">
+            <form action="{{ route('management.ferries.store') }}" method="POST" class="mt-6 space-y-6">
                 @csrf
                 <div class="bg-white shadow rounded-lg p-6">
                     <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
