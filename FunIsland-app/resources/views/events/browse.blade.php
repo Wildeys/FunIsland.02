@@ -42,19 +42,15 @@
                 @foreach($featuredEvents as $event)
                 <div class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300">
                     <div class="h-48 bg-gradient-to-br from-orange-400 to-pink-600 flex items-center justify-center relative">
-                        @if($event->image_url)
-                            <img src="{{ $event->image_url }}" alt="{{ $event->name }}" class="w-full h-full object-cover">
-                        @else
-                            <span class="text-8xl">
-                                @if($event->type === 'beach_event')
-                                    🏖️
-                                @elseif($event->type === 'activity')
-                                    🚤
-                                @else
-                                    🎭
-                                @endif
-                            </span>
-                        @endif
+                        <span class="text-8xl">
+                            @if($event->type === 'beach_event')
+                                🏖️
+                            @elseif($event->type === 'activity')
+                                🚤
+                            @else
+                                🎭
+                            @endif
+                        </span>
                         <div class="absolute top-2 right-2 bg-yellow-400 text-gray-800 px-2 py-1 rounded-full text-xs font-bold">
                             {{ strtoupper($event->type_display) }}
                         </div>
@@ -111,19 +107,15 @@
                     @foreach($events as $event)
                     <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100">
                         <div class="h-48 bg-gradient-to-br from-orange-400 to-pink-600 flex items-center justify-center relative">
-                            @if($event->image_url)
-                                <img src="{{ $event->image_url }}" alt="{{ $event->name }}" class="w-full h-full object-cover">
-                            @else
-                                <span class="text-6xl">
-                                    @if($event->type === 'beach_event')
-                                        🏖️
-                                    @elseif($event->type === 'activity')
-                                        🚤
-                                    @else
-                                        🎭
-                                    @endif
-                                </span>
-                            @endif
+                            <span class="text-6xl">
+                                @if($event->type === 'beach_event')
+                                    🏖️
+                                @elseif($event->type === 'activity')
+                                    🚤
+                                @else
+                                    🎭
+                                @endif
+                            </span>
                             <div class="absolute top-2 right-2">
                                 <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium 
                                     @if($event->type === 'beach_event') bg-blue-100 text-blue-800

@@ -147,23 +147,16 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
             @foreach($themeparks as $themepark)
             <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                @if($themepark->image_url)
-                <div class="h-48 bg-cover bg-center" style="background-image: url('{{ $themepark->image_url }}')">
-                    <div class="h-full bg-black bg-opacity-30 flex items-end">
-                        <div class="p-4">
-                            @if($themepark->featured)
-                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                ⭐ Featured
-                            </span>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                @else
-                <div class="h-48 bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+                <div class="h-48 bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center relative">
                     <span class="text-6xl">🎢</span>
+                    @if($themepark->featured)
+                    <div class="absolute top-4 left-4">
+                        <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            ⭐ Featured
+                        </span>
+                    </div>
+                    @endif
                 </div>
-                @endif
                 
                 <div class="p-6">
                     <div class="flex items-start justify-between mb-2">

@@ -103,11 +103,11 @@
                         <x-text-input id="image_url" name="image_url" type="url" class="mt-1 block w-full" 
                                      :value="old('image_url', $hotel->image_url)" placeholder="https://example.com/hotel-image.jpg" />
                         <x-input-error class="mt-2" :messages="$errors->get('image_url')" />
-                        @if($hotel->image_url)
-                            <div class="mt-2">
-                                <img src="{{ $hotel->image_url }}" alt="{{ $hotel->name }}" class="h-20 w-32 object-cover rounded">
+                        <div class="mt-2">
+                            <div class="h-20 w-32 bg-gradient-to-br from-blue-400 to-blue-600 rounded flex items-center justify-center">
+                                <span class="text-3xl">🏨</span>
                             </div>
-                        @endif
+                        </div>
                     </div>
 
                     <!-- Amenities -->

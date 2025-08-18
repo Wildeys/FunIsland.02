@@ -46,7 +46,9 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach($beachEvents as $event)
                 <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all transform hover:scale-105">
-                    <img src="{{ $event['image'] }}" alt="{{ $event['name'] }}" class="w-full h-48 object-cover">
+                    <div class="w-full h-48 bg-gradient-to-br from-yellow-400 to-orange-600 flex items-center justify-center">
+                        <span class="text-6xl">🏖️</span>
+                    </div>
                     
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $event['name'] }}</h3>

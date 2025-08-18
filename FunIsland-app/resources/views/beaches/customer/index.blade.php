@@ -16,21 +16,17 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @forelse($beachEvents as $event)
                 <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all transform hover:scale-105">
-                    @if($event->image_url)
-                        <img src="{{ $event->image_url }}" alt="{{ $event->name }}" class="w-full h-48 object-cover">
-                    @else
-                        <div class="w-full h-48 bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
-                            <span class="text-6xl">
-                                @if($event->type == 'beach_event')
-                                    🏖️
-                                @elseif($event->type == 'activity')
-                                    🚤
-                                @else
-                                    🎵
-                                @endif
-                            </span>
-                        </div>
-                    @endif
+                    <div class="w-full h-48 bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
+                        <span class="text-6xl">
+                            @if($event->type == 'beach_event')
+                                🏖️
+                            @elseif($event->type == 'activity')
+                                🚤
+                            @else
+                                🎵
+                            @endif
+                        </span>
+                    </div>
                     
                     <div class="p-6">
                         <div class="flex items-center justify-between mb-2">

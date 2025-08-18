@@ -45,6 +45,47 @@
         </div>
     </div>
 
+    <!-- Advertisement Banner Section -->
+    @if(isset($activeBanner) && $activeBanner)
+    <div class="py-6 bg-gradient-to-r from-yellow-50 to-orange-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="relative overflow-hidden rounded-2xl shadow-xl">
+                @if($activeBanner->link_url)
+                    <a href="{{ $activeBanner->link_url }}" target="_blank" class="block">
+                        <img src="{{ $activeBanner->image_url }}" 
+                             alt="{{ $activeBanner->title }}" 
+                             class="w-full h-48 md:h-64 lg:h-80 object-cover hover:scale-105 transition-transform duration-300">
+                        @if($activeBanner->title || $activeBanner->description)
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                                @if($activeBanner->title)
+                                    <h3 class="text-xl md:text-2xl font-bold text-white mb-2">{{ $activeBanner->title }}</h3>
+                                @endif
+                                @if($activeBanner->description)
+                                    <p class="text-white/90 text-sm md:text-base">{{ $activeBanner->description }}</p>
+                                @endif
+                            </div>
+                        @endif
+                    </a>
+                @else
+                    <img src="{{ $activeBanner->image_url }}" 
+                         alt="{{ $activeBanner->title }}" 
+                         class="w-full h-48 md:h-64 lg:h-80 object-cover">
+                    @if($activeBanner->title || $activeBanner->description)
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                            @if($activeBanner->title)
+                                <h3 class="text-xl md:text-2xl font-bold text-white mb-2">{{ $activeBanner->title }}</h3>
+                            @endif
+                            @if($activeBanner->description)
+                                <p class="text-white/90 text-sm md:text-base">{{ $activeBanner->description }}</p>
+                            @endif
+                        </div>
+                    @endif
+                @endif
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Features Section -->
     <div class="py-20 bg-gradient-to-br from-blue-50 via-white to-green-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

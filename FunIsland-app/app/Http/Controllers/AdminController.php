@@ -8,8 +8,10 @@ use App\Models\hotel;
 use App\Models\ferry;
 use App\Models\themepark;
 use App\Models\Booking;
+use App\Models\AdvertisementBanner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules;
 
 class AdminController extends Controller
@@ -363,5 +365,150 @@ class AdminController extends Controller
 
         return redirect()->route('admin.bookings')
             ->with('success', 'Booking cancelled successfully!');
+    }
+
+    // ============================================================================
+    // ADVERTISEMENT BANNER MANAGEMENT
+    // ============================================================================
+
+    /**
+     * Display advertisement banners
+     */
+    public function banners()
+    {
+        $banners = AdvertisementBanner::ordered()->get();
+        return view('admin.banners.index', compact('banners'));
+    }
+
+    /**
+     * Show create banner form
+     */
+    public function createBanner()
+    {
+        return view('admin.banners.create');
+    }
+
+    /**
+     * Store new banner
+     */
+    public function storeBanner(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'link_url' => 'nullable|url',
+            'description' => 'nullable|string',
+            'is_active' => 'boolean',
+            'display_order' => 'integer|min:0',
+            'starts_at' => 'nullable|date',
+            'ends_at' => 'nullable|date|after:starts_at'
+        ]);
+
+        // Handle image upload
+        $imagePath = $request->file('image')->store('banners', 'public');
+
+        // If this banner is set to active, deactivate all others
+        if ($request->is_active) {
+            AdvertisementBanner::where('is_active', true)->update(['is_active' => false]);
+        }
+
+        AdvertisementBanner::create([
+            'title' => $request->title,
+            'image_path' => $imagePath,
+            'link_url' => $request->link_url,
+            'description' => $request->description,
+            'is_active' => $request->boolean('is_active'),
+            'display_order' => $request->display_order ?? 0,
+            'starts_at' => $request->starts_at,
+            'ends_at' => $request->ends_at
+        ]);
+
+        return redirect()->route('admin.banners')
+            ->with('success', 'Banner created successfully!');
+    }
+
+    /**
+     * Show edit banner form
+     */
+    public function editBanner(AdvertisementBanner $banner)
+    {
+        return view('admin.banners.edit', compact('banner'));
+    }
+
+    /**
+     * Update banner
+     */
+    public function updateBanner(Request $request, AdvertisementBanner $banner)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'link_url' => 'nullable|url',
+            'description' => 'nullable|string',
+            'is_active' => 'boolean',
+            'display_order' => 'integer|min:0',
+            'starts_at' => 'nullable|date',
+            'ends_at' => 'nullable|date|after:starts_at'
+        ]);
+
+        $data = [
+            'title' => $request->title,
+            'link_url' => $request->link_url,
+            'description' => $request->description,
+            'is_active' => $request->boolean('is_active'),
+            'display_order' => $request->display_order ?? 0,
+            'starts_at' => $request->starts_at,
+            'ends_at' => $request->ends_at
+        ];
+
+        // Handle image upload if provided
+        if ($request->hasFile('image')) {
+            // Delete old image
+            if ($banner->image_path && Storage::disk('public')->exists($banner->image_path)) {
+                Storage::disk('public')->delete($banner->image_path);
+            }
+            
+            $data['image_path'] = $request->file('image')->store('banners', 'public');
+        }
+
+        // If this banner is set to active, deactivate all others
+        if ($request->is_active && !$banner->is_active) {
+            AdvertisementBanner::where('is_active', true)->update(['is_active' => false]);
+        }
+
+        $banner->update($data);
+
+        return redirect()->route('admin.banners')
+            ->with('success', 'Banner updated successfully!');
+    }
+
+    /**
+     * Delete banner
+     */
+    public function destroyBanner(AdvertisementBanner $banner)
+    {
+        $banner->delete(); // This will also delete the image file
+        
+        return redirect()->route('admin.banners')
+            ->with('success', 'Banner deleted successfully!');
+    }
+
+    /**
+     * Toggle banner active status
+     */
+    public function toggleBanner(AdvertisementBanner $banner)
+    {
+        if (!$banner->is_active) {
+            // Deactivate all other banners
+            AdvertisementBanner::where('is_active', true)->update(['is_active' => false]);
+            $banner->update(['is_active' => true]);
+            $message = 'Banner activated successfully!';
+        } else {
+            $banner->update(['is_active' => false]);
+            $message = 'Banner deactivated successfully!';
+        }
+
+        return redirect()->route('admin.banners')
+            ->with('success', $message);
     }
 }

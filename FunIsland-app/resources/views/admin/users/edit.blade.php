@@ -29,17 +29,11 @@
                     <div class="flex items-center space-x-6">
                         <div class="flex-shrink-0">
                             <div class="w-24 h-24 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-                                @if($user->profile_image)
-                                    <img id="imagePreview" src="{{ asset('storage/' . $user->profile_image) }}" 
-                                         alt="{{ $user->name }}" 
-                                         class="w-full h-full object-cover">
-                                @else
-                                    <div id="imagePreview" class="w-full h-full bg-blue-500 flex items-center justify-center">
-                                        <span class="text-white text-xl font-bold">
-                                            {{ substr($user->name, 0, 1) }}
-                                        </span>
-                                    </div>
-                                @endif
+                                <div id="imagePreview" class="w-full h-full bg-blue-500 flex items-center justify-center">
+                                    <span class="text-white text-xl font-bold">
+                                        {{ substr($user->name, 0, 1) }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="flex-1">
@@ -182,16 +176,5 @@
         </div>
     </div>
 
-    <script>
-        function previewImage(input) {
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('imagePreview').innerHTML = 
-                        `<img src="${e.target.result}" alt="Preview" class="w-full h-full object-cover">`;
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-    </script>
+    <!-- Image preview removed - using emoji representation -->
 </x-management-layout>

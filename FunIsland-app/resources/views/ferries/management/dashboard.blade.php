@@ -1,5 +1,6 @@
 <x-management-layout>
     <x-slot name="header">
+        <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Ferry Management Dashboard</h1>
                 <p class="text-sm text-gray-600">Manage ferry operations and schedules</p>
@@ -10,6 +11,7 @@
                     Add New Ferry
                 </a>
             </div>
+        </div>
     </x-slot>
 
     <div class="p-6">

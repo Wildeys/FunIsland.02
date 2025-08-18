@@ -42,11 +42,7 @@
                 @foreach($featuredRoutes as $ferry)
                 <div class="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300">
                     <div class="h-48 bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center relative">
-                        @if($ferry->image_url)
-                            <img src="{{ $ferry->image_url }}" alt="{{ $ferry->name }}" class="w-full h-full object-cover">
-                        @else
-                            <span class="text-8xl">🚤</span>
-                        @endif
+                        <span class="text-8xl">🚤</span>
                         <div class="absolute top-2 right-2 bg-yellow-400 text-gray-800 px-2 py-1 rounded-full text-xs font-bold">
                             POPULAR
                         </div>
@@ -91,11 +87,7 @@
                     @foreach($ferries as $ferry)
                     <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100">
                         <div class="h-48 bg-gradient-to-br from-teal-400 to-teal-600 flex items-center justify-center">
-                            @if($ferry->image_url)
-                                <img src="{{ $ferry->image_url }}" alt="{{ $ferry->name }}" class="w-full h-full object-cover">
-                            @else
-                                <span class="text-6xl">🚤</span>
-                            @endif
+                            <span class="text-6xl">🚤</span>
                         </div>
                         <div class="p-6">
                             <h3 class="text-lg font-bold text-gray-800 mb-3">{{ $ferry->name }}</h3>

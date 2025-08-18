@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Ferry;
+use App\Models\ferry;
 use App\Models\Location;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;

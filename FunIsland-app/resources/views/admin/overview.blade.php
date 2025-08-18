@@ -1,7 +1,10 @@
 <x-management-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h1 class="text-2xl font-bold text-gray-900">System Overview</h1>
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900">System Overview</h1>
+                <p class="text-sm text-gray-600">Monitor system status and statistics</p>
+            </div>
             <div class="flex items-center space-x-2">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                     <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-green-400" fill="currentColor" viewBox="0 0 8 8">
@@ -318,6 +321,21 @@
                         <div class="ml-4">
                             <h4 class="text-sm font-medium text-gray-900">Settings</h4>
                             <p class="text-sm text-gray-500">System configuration</p>
+                        </div>
+                    </a>
+
+                    <a href="{{ route('admin.banners') }}" 
+                       class="flex items-center p-4 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 bg-orange-500 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="text-sm font-medium text-gray-900">Advertisement Banners</h4>
+                            <p class="text-sm text-gray-500">Manage homepage banners</p>
                         </div>
                     </a>
                 </div>

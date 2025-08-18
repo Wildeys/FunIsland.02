@@ -29,11 +29,7 @@
                 <!-- Hotel Image -->
                 <div class="space-y-6">
                     <div class="h-64 lg:h-80 bg-gradient-to-br from-blue-400 to-blue-600 rounded-2xl flex items-center justify-center">
-                        @if($hotel->image_url)
-                            <img src="{{ $hotel->image_url }}" alt="{{ $hotel->name }}" class="w-full h-full object-cover rounded-2xl">
-                        @else
-                            <span class="text-8xl">🏨</span>
-                        @endif
+                        <span class="text-8xl">🏨</span>
                     </div>
                 </div>
 

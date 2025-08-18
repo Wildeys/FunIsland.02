@@ -12,14 +12,9 @@
             <div class="lg:col-span-2">
                 <!-- Park Image -->
                 <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
-                    @if($themepark->image_url)
-                        <img src="{{ $themepark->image_url }}" alt="{{ $themepark->name }}" 
-                             class="w-full h-96 object-cover">
-                    @else
-                        <div class="w-full h-96 bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
-                            <span class="text-8xl">🎢</span>
-                        </div>
-                    @endif
+                    <div class="w-full h-96 bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center">
+                        <span class="text-8xl">🎢</span>
+                    </div>
                 </div>
 
                 <!-- Park Description -->

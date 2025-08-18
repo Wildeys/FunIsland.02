@@ -17,12 +17,12 @@
     <body class="font-sans antialiased bg-gray-100">
         <div class="min-h-screen">
             <!-- Sidebar -->
-            <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0" 
+            <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out lg:translate-x-0 flex flex-col" 
                  x-data="{ open: false }" 
                  :class="{ '-translate-x-full': !open, 'translate-x-0': open }">
                 
                 <!-- Sidebar Header -->
-                <div class="flex items-center justify-between h-16 px-6 bg-blue-600">
+                <div class="flex items-center justify-between h-16 px-6 bg-blue-600 flex-shrink-0">
                     <div class="text-white font-semibold text-lg">FunIsland Management</div>
                     <button @click="open = false" class="lg:hidden text-white">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -31,9 +31,9 @@
                     </button>
                 </div>
 
-                <!-- Navigation Menu -->
-                <nav class="mt-5 px-2">
-                    <div class="space-y-1">
+                <!-- Navigation Menu - Scrollable -->
+                <nav class="flex-1 overflow-y-auto px-2 py-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                    <div class="space-y-1 pb-4">
                         <!-- Dashboard -->
                         <a href="{{ route('dashboard') }}" 
                            class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('dashboard') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
@@ -152,11 +152,33 @@
                                     System Overview
                                 </a>
                                 <a href="{{ route('admin.users') }}" 
-                                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.users') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.users*') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                                     <svg class="mr-3 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5 0a4 4 0 11-8-4.532M5 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
                                     </svg>
                                     User Management
+                                </a>
+                                <a href="{{ route('admin.banners') }}" 
+                                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.banners*') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                    <svg class="mr-3 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                    </svg>
+                                    Advertisement Banners
+                                </a>
+                                <a href="{{ route('admin.roles') }}" 
+                                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.roles*') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                    <svg class="mr-3 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                    </svg>
+                                    Role Management
+                                </a>
+                                <a href="{{ route('admin.settings') }}" 
+                                   class="group flex items-center px-2 py-2 text-sm font-medium rounded-md {{ request()->routeIs('admin.settings*') ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                                    <svg class="mr-3 h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    Settings
                                 </a>
                             </div>
                         </div>
@@ -164,8 +186,8 @@
                     </div>
                 </nav>
 
-                <!-- User Info -->
-                <div class="absolute bottom-0 w-full p-4 border-t border-gray-200">
+                <!-- User Info - Fixed at bottom -->
+                <div class="flex-shrink-0 p-4 border-t border-gray-200 bg-white">
                     <div class="flex items-center">
                         <div class="flex-shrink-0">
                             <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
@@ -198,16 +220,16 @@
             <!-- Main Content -->
             <div class="lg:pl-64">
                 <!-- Top Header -->
-                <header class="bg-white shadow-sm border-b border-gray-200 f">
+                <header class="bg-white shadow-sm border-b border-gray-200">
                     <div class="px-4 sm:px-6 lg:px-8">
-                        <div class="flex justify-between h-16 items-center">
-                           
+                        <div class="h-16 flex items-center">
+                            <div class="w-full">
                                 @isset($header)
                                     {{ $header }}
                                 @else
                                     <h1 class="text-lg font-semibold text-gray-900">{{ $title ?? 'Management Dashboard' }}</h1>
                                 @endisset
-                            
+                            </div>
                         </div>
                     </div>
                 </header>

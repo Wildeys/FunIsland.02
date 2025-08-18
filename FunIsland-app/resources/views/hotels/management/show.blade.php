@@ -30,14 +30,9 @@
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                         <!-- Hotel Image -->
                         <div class="lg:col-span-1">
-                            @if($hotel->image_url)
-                                <img src="{{ $hotel->image_url }}" alt="{{ $hotel->name }}" 
-                                     class="w-full h-64 object-cover rounded-lg">
-                            @else
-                                <div class="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-                                    <span class="text-gray-500">No Image Available</span>
-                                </div>
-                            @endif
+                            <div class="w-full h-64 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                                <span class="text-6xl">🏨</span>
+                            </div>
                         </div>
                         
                         <!-- Hotel Details -->

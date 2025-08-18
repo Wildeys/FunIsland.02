@@ -33,22 +33,17 @@
             <div class="lg:col-span-2">
                 <!-- Event Image -->
                 <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
-                    @if($event->image_url)
-                        <img src="{{ $event->image_url }}" alt="{{ $event->name }}" 
-                             class="w-full h-96 object-cover">
-                    @else
-                        <div class="w-full h-96 bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
-                            <span class="text-8xl">
-                                @if($event->type == 'beach_event')
-                                    🏖️
-                                @elseif($event->type == 'activity')
-                                    🚤
-                                @else
-                                    🎵
-                                @endif
-                            </span>
-                        </div>
-                    @endif
+                    <div class="w-full h-96 bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center">
+                        <span class="text-8xl">
+                            @if($event->type == 'beach_event')
+                                🏖️
+                            @elseif($event->type == 'activity')
+                                🚤
+                            @else
+                                🎵
+                            @endif
+                        </span>
+                    </div>
                 </div>
 
                 <!-- Event Description -->

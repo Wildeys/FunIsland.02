@@ -159,17 +159,9 @@
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center">
-                                            @if($hotel->image_url)
-                                                <div class="flex-shrink-0 h-10 w-10">
-                                                    <img class="h-10 w-10 rounded-lg object-cover" src="{{ $hotel->image_url }}" alt="{{ $hotel->name }}">
-        </div>
-        @else
-                                                <div class="flex-shrink-0 h-10 w-10 bg-gray-200 rounded-lg flex items-center justify-center">
-                                                    <svg class="h-6 w-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
-                                                    </svg>
-                                                </div>
-                                            @endif
+                                            <div class="flex-shrink-0 h-10 w-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center">
+                                                <span class="text-lg">🏨</span>
+                                            </div>
                                             <div class="ml-4">
                                                 <div class="text-sm font-medium text-gray-900">{{ $hotel->name }}</div>
                                                 <div class="text-sm text-gray-500">{{ Str::limit($hotel->description, 60) }}</div>

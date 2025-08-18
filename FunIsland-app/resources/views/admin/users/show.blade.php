@@ -31,17 +31,11 @@
                         <!-- Profile Image -->
                         <div class="flex-shrink-0">
                             <div class="w-32 h-32 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-                                @if($user->profile_image)
-                                    <img src="{{ asset('storage/' . $user->profile_image) }}" 
-                                         alt="{{ $user->name }}" 
-                                         class="w-full h-full object-cover">
-                                @else
-                                    <div class="w-full h-full bg-blue-500 flex items-center justify-center">
-                                        <span class="text-white text-3xl font-bold">
-                                            {{ substr($user->name, 0, 1) }}
-                                        </span>
-                                    </div>
-                                @endif
+                                <div class="w-full h-full bg-blue-500 flex items-center justify-center">
+                                    <span class="text-white text-3xl font-bold">
+                                        {{ substr($user->name, 0, 1) }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
 
