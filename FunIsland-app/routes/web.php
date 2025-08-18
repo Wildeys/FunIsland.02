@@ -127,6 +127,7 @@ Route::middleware(['auth', 'management'])->prefix('management')->name('managemen
         Route::get('/bookings/pending', [BookingController::class, 'pendingHotelBookings'])->name('bookings.pending');
         Route::patch('/bookings/{booking}/approve', [BookingController::class, 'approveBooking'])->name('bookings.approve');
         Route::patch('/bookings/{booking}/reject', [BookingController::class, 'rejectBooking'])->name('bookings.reject');
+        Route::patch('/bookings/{booking}/status', [BookingController::class, 'updateStatus'])->name('bookings.updateStatus');
     });
 
     // Ferry Management Routes

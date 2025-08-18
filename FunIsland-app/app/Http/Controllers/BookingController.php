@@ -177,13 +177,26 @@ class BookingController extends Controller
      */
     public function updateStatus(Request $request, Booking $booking)
     {
+        $user = auth()->user();
+        
+        // Check if user can update this booking status
+        $canUpdate = $user->isAdministrator() ||
+                    $user->canManageTicketing() ||
+                    ($user->canManageHotels() && $booking->booking_type === 'hotel') ||
+                    ($user->canManageFerries() && $booking->booking_type === 'ferry') ||
+                    ($user->canManageThemeParks() && $booking->booking_type === 'themepark');
+
+        if (!$canUpdate) {
+            abort(403, 'Unauthorized to update this booking status.');
+        }
+
         $request->validate([
             'status' => 'required|in:pending,confirmed,cancelled,completed'
         ]);
 
         $booking->update(['status' => $request->status]);
 
-        return redirect()->back()->with('success', 'Booking status updated successfully.');
+        return redirect()->back()->with('success', 'Booking status updated to ' . ucfirst($request->status) . ' successfully.');
     }
 
     /**

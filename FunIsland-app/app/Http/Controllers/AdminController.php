@@ -342,6 +342,28 @@ class AdminController extends Controller
     }
 
     /**
+     * Update booking status only (for quick status changes)
+     */
+    public function updateStatus(Request $request, Booking $booking)
+    {
+        // Check if user can update this booking
+        if (!auth()->user()->isAdministrator() && !auth()->user()->canManageTicketing()) {
+            abort(403, 'Unauthorized access.');
+        }
+
+        $request->validate([
+            'status' => ['required', 'in:pending,confirmed,cancelled,completed'],
+        ]);
+
+        $booking->update([
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('admin.bookings.show', $booking)
+            ->with('success', 'Booking status updated to ' . ucfirst($request->status) . ' successfully!');
+    }
+
+    /**
      * Cancel booking
      */
     public function cancelBooking(Booking $booking)

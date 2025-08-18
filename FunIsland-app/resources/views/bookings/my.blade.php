@@ -65,9 +65,19 @@
                                class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
                                 View Details
                             </a>
-                            
+                            @if(auth()->user()->canManageTicketing())
+                            <form method="POST" action="{{ route('bookings.updateStatus', $booking) }}" class="inline">
+                                @csrf
+                                @method('PUT')
+                                <input type="hidden" name="status" value="confirmed">
+                                <button type="submit" 
+                                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                    Confirm Booking
+                                </button>
+                            </form>
+                            @endif
                             @if($booking->status === 'pending' || $booking->status === 'confirmed')
-                                <form method="POST" action="{{ route('management.bookings.cancel', $booking->id) }}" 
+                                <form method="POST" action="{{ route('bookings.destroy', $booking->id) }}" 
                                       onsubmit="return confirm('Are you sure you want to cancel this booking?')">
                                     @csrf
                                     @method('DELETE')
