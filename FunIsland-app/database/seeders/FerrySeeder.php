@@ -73,8 +73,6 @@ class FerrySeeder extends Seeder
             return;
         }
 
-        $locationNames = $locations->pluck('location_name', 'id')->toArray();
-
         // Create schedules for the next 30 days
         for ($i = 0; $i < 30; $i++) {
             $date = Carbon::now()->addDays($i);
@@ -87,7 +85,7 @@ class FerrySeeder extends Seeder
                 // Get different departure and arrival locations
                 $departureLocationId = $ferry->location_id;
                 $arrivalLocationIds = $locations->where('id', '!=', $departureLocationId)->pluck('id')->toArray();
-                
+
                 if (empty($arrivalLocationIds)) {
                     $this->command->warn("No valid arrival locations for ferry {$ferry->name}. Skipping schedule.");
                     continue;
@@ -101,12 +99,10 @@ class FerrySeeder extends Seeder
                     'ferry_id' => $ferry->id,
                     'date' => $date->format('Y-m-d'),
                     'departure_time' => $times[$j],
-                    'departure_location' => $locationNames[$departureLocationId],
-                    'arrival_location' => $locationNames[$arrivalLocationId],
                     'departure_location_id' => $departureLocationId,
                     'arrival_location_id' => $arrivalLocationId,
                     'price' => $basePrice,
-                    'remaining_seats' => rand(10, $ferry->capacity), // Adjusted to avoid negative/excessive seats
+                    'remaining_seats' => rand(10, $ferry->capacity),
                     'is_available' => true,
                     'created_at' => now(),
                     'updated_at' => now(),
