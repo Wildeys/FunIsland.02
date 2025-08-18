@@ -189,6 +189,23 @@ class AdminController extends Controller
     }
 
     /**
+     * Assign roles to users
+     */
+    public function assignRoles(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'role_id' => 'required|exists:roles,id',
+        ]);
+
+        $user = User::findOrFail($request->user_id);
+        $user->role_id = $request->role_id;
+        $user->save();
+
+        return redirect()->route('admin.roles')->with('success', 'Role assigned successfully!');
+    }
+
+    /**
      * System settings
      */
     public function settings()

@@ -151,7 +151,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
         
         // Role assignment routes
-        Route::get('/admin/roles', [AdminController::class, 'roleAssignment'])->name('admin.roles');
+        Route::get('/admin/roles', [AdminController::class, 'roles'])->name('admin.roles');
         Route::post('/admin/roles/assign', [AdminController::class, 'assignRoles'])->name('admin.roles.assign');
         
         // System statistics and reports

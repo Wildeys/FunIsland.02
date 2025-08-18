@@ -33,33 +33,10 @@
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                     </svg>
                 </label>
-
-                <label class="relative flex cursor-pointer rounded-lg border bg-white p-4 shadow-sm focus-within:ring-2 focus-within:ring-blue-500">
-                    <input type="radio" name="account_type" value="business" class="sr-only" onchange="updateRoleSelection('business')">
-                    <span class="flex flex-1">
-                        <span class="flex flex-col">
-                            <span class="block text-sm font-medium text-gray-900">🏢 Manage Business</span>
-                            <span class="mt-1 flex items-center text-sm text-gray-500">Operate hotels, ferries, or parks</span>
-                        </span>
-                    </span>
-                    <svg class="h-5 w-5 text-blue-600 hidden" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                    </svg>
-                </label>
             </div>
         </div>
 
         <!-- Business Role Selection (Hidden by default) -->
-        <div id="business-roles" class="hidden">
-            <label for="role" class="block text-sm font-medium text-gray-700 mb-2">Business Type</label>
-            <select name="role" id="role" class="block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                <option value="hotel_manager">🏨 Hotel Manager - Manage hotel properties and bookings</option>
-                <option value="ferry_operator">🚤 Ferry Operator - Manage ferry schedules and tickets</option>
-                <option value="theme_park_manager">🎢 Theme Park Manager - Manage parks and attractions</option>
-                <option value="ticketing_staff">🎫 Ticketing Staff - Handle ticket sales and customer service</option>
-            </select>
-            <p class="mt-1 text-sm text-gray-500">Choose the type of business you want to manage on FunIsland.</p>
-        </div>
 
         <!-- Hidden role field for customers -->
         <input type="hidden" name="customer_role" value="customer">

@@ -431,6 +431,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/bookings/{booking}', [\App\Http\Controllers\BookingController::class, 'show'])->name('bookings.show');
     Route::get('/bookings/{booking}/edit', [\App\Http\Controllers\BookingController::class, 'edit'])->name('bookings.edit');
     Route::put('/bookings/{booking}', [\App\Http\Controllers\BookingController::class, 'update'])->name('bookings.update');
+    Route::patch('/bookings/cancel', [\App\Http\Controllers\BookingController::class, 'cancel'])->name('management.bookings.cancel');
     Route::delete('/bookings/{booking}', [\App\Http\Controllers\BookingController::class, 'destroy'])->name('bookings.destroy');
 
     

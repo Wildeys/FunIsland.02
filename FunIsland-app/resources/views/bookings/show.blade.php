@@ -1,13 +1,13 @@
 <x-management-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Booking Details') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white  overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     
                     <!-- Booking Header -->
@@ -38,7 +38,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         
                         <!-- Customer Information -->
-                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <div class="bg-gray-50  rounded-lg p-4">
                             <h3 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">Customer Information</h3>
                             <div class="space-y-2">
                                 <p><span class="font-medium">Name:</span> {{ $booking->user->name }}</p>
@@ -48,7 +48,7 @@
                         </div>
 
                         <!-- Booking Information -->
-                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <div class="bg-gray-50  rounded-lg p-4">
                             <h3 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">Booking Information</h3>
                             <div class="space-y-2">
                                 <p><span class="font-medium">Guests:</span> {{ $booking->guests }}</p>
@@ -67,7 +67,7 @@
 
                         @if($booking->booking_type === 'hotel' && $booking->hotel)
                         <!-- Hotel Details -->
-                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <div class="bg-gray-50  rounded-lg p-4">
                             <h3 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">Hotel Details</h3>
                             <div class="space-y-2">
                                 <p><span class="font-medium">Hotel:</span> {{ $booking->hotel->name }}</p>
@@ -83,7 +83,7 @@
 
                         @if($booking->booking_type === 'ferry' && $booking->ferry)
                         <!-- Ferry Details -->
-                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <div class="bg-gray-50  rounded-lg p-4">
                             <h3 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">Ferry Details</h3>
                             <div class="space-y-2">
                                 <p><span class="font-medium">Ferry:</span> {{ $booking->ferry->name }}</p>
@@ -94,7 +94,7 @@
 
                         @if($booking->booking_type === 'event' && $booking->event)
                         <!-- Event Details -->
-                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <div class="bg-gray-50  rounded-lg p-4">
                             <h3 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">Event Details</h3>
                             <div class="space-y-2">
                                 <p><span class="font-medium">Event:</span> {{ $booking->event->name }}</p>
@@ -105,7 +105,7 @@
 
                         <!-- Special Requests -->
                         @if($booking->special_requests)
-                        <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 md:col-span-2">
+                        <div class="bg-gray-50  rounded-lg p-4 md:col-span-2">
                             <h3 class="text-lg font-semibold mb-3 text-gray-900 dark:text-white">Special Requests</h3>
                             <p class="text-gray-700 dark:text-gray-300">{{ $booking->special_requests }}</p>
                         </div>
@@ -120,7 +120,7 @@
                         </a>
                         
                         <div class="space-x-2">
-                            @if($booking->status === 'pending')
+                            @if($booking->status === 'pending' && auth()->user()->canManageTicketing())
                             <form method="POST" action="{{ route('bookings.updateStatus', $booking) }}" class="inline">
                                 @csrf
                                 @method('PUT')
